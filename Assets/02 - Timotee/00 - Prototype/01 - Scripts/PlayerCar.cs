@@ -1,136 +1,135 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TouchPhase = UnityEngine.TouchPhase;
-using UnityEngine.Events;
 
-public enum Road {
-    Left = 0,
-    Middle = 1,
-    Right = 2
+public enum Road{
+	Left = 0,
+	Middle = 1,
+	Right = 2
 }
 
-public class PlayerCar : MonoBehaviour
-{
-    [SerializeField] private float _minimalSwipeSpeed;
+public class PlayerCar : MonoBehaviour{
+	private static CustomInput _rightTurnInput;
+	private static CustomInput _leftTurnInput;
 
-    [SerializeField] private PlayerHitbox[] _hitboxes = new PlayerHitbox[3];
-    
-    private Vector2 _startSwipe;
-    private Vector2 _endSwipe;
+	private Camera _camera;
+	private int _currentPath;
+	private int _previousPath;
 
-    private Camera _camera;
-    private int _currentPath;
-    private int _previousPath;
+	private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
+	private Vector3 _cameraBasePosition;
+	private bool CanMove => _tweener == null || !_tweener.IsActive() || _tweener.IsComplete();
 
-    private MainControls _mainControls;
+	[SerializeField] private ParticleSystem _smoke;
+	private bool _paused;
+	private InputBuffer _inputBuffer;
 
-    private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
-    private bool CanMove => _tweener == null || _tweener.IsComplete();    
+	private void Awake(){
+		_camera = Camera.main;
+		_inputBuffer = GetComponent<InputBuffer>();
+		_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
+	}
 
-    private void Awake()
-    {
-        _mainControls = new MainControls();
-        _currentPath = 1;
-        _previousPath = 1;
-    }
+	//Initialise fields
+	private void Start(){
+		_currentPath = 1;
+		_previousPath = 1;
+		_cameraBasePosition = _camera.transform.position;
+		_rightTurnInput = new CustomInput(TurnRight);
+		_leftTurnInput = new CustomInput(TurnLeft);
+	}
 
-    private void Start()
-    {
-        _mainControls.Touch.PrimaryTouch.started += ctx => StartSwipe(ctx);
-        _mainControls.Touch.PrimaryTouch.canceled += ctx => EndSwipe(ctx);
-    }
+	//Subscribe/Unsuscribe to events
+	private void OnEnable(){
+		PlayerHitbox.OnContact += HandleHitboxContact;
+		InputManager.OnSwipe += HandleSwipe;
+		GameManager.OnPause += Pause;
+		GameManager.OnGameLost += Die;
+	}
 
-    private void OnEnable()
-    {
-        _camera = Camera.main;
-        _mainControls.Enable();
+	private void OnDisable(){
+		PlayerHitbox.OnContact -= HandleHitboxContact;
+		InputManager.OnSwipe -= HandleSwipe;
+		GameManager.OnPause += Pause;
+		GameManager.OnGameLost += Die;
+	}
 
-        PlayerHitbox.OnContact += HandleHitboxContact;
-    }
+	//Editor only
+	private void Update(){
+		#if UNITY_EDITOR
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+			TurnLeft();
+		else if (Input.GetKeyDown(KeyCode.RightArrow))
+			TurnRight();
+		#endif
+	}
 
-    private void OnDisable()
-    {
-        _mainControls.Disable();
-    }
+	//Controls
+	private void HandleSwipe(SwipeData data){
+		if (data.Side == SwipeSide.Left)
+			TurnLeft();
+		else
+			TurnRight();
+	}
 
-    private void Update() {
-        #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            SwipeLeft();
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-            SwipeRight();
-        #endif
-    }
+	private void TurnRight(){
+		if (_paused || _currentPath == 2) return;
+		if (!CanMove){
+			_inputBuffer.AddInput(_rightTurnInput);
+			return;
+		}
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (!other.CompareTag("Obstacle")) return;
-    //     Debug.Log("Trigger");
-    //     _tweener.Kill();
-    // }
+		_previousPath = _currentPath;
+		_currentPath++;
+		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f).OnComplete(OnCanMove);
+	}
 
-    private void SwipeRight() {
-        if (_currentPath != 2 && CanMove)
-        {
-            _previousPath = _currentPath;
-            _currentPath++;
-            _tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f);
-        }
-    }
+	private void TurnLeft(){
+		if (_paused || _currentPath == 0) return;
+		if (!CanMove){
+			_inputBuffer.AddInput(_leftTurnInput);
+			return;
+		}
 
-    private void SwipeLeft() {
-        if (_currentPath != 0 && CanMove)
-        {
-            _previousPath = _currentPath;
-            _currentPath--;
-            _tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f);
-        }
-    }
+		_previousPath = _currentPath;
+		_currentPath--;
+		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f).OnComplete(OnCanMove);
+	}
 
-    private void StartSwipe(InputAction.CallbackContext context)
-    {
-        Debug.Log("Start Swipe");
-        _startSwipe = _mainControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>();
-    }
-    
-    private void EndSwipe(InputAction.CallbackContext context) {
-        Debug.Log("End Swipe");
-        _endSwipe = _mainControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>();
-        
-        Vector3 normalizedStart = _camera.ScreenToViewportPoint(_startSwipe);
-        Vector3 normalizedEnd = _camera.ScreenToViewportPoint(_endSwipe);
-        
-        if (normalizedEnd.x > normalizedStart.x + 0.1f) {
-            SwipeRight();
-        } else if (normalizedEnd.x < normalizedStart.x - 0.1f) {
-            SwipeLeft();
-        }
-    }
+	private void OnCanMove(){
+		if (_inputBuffer.TryGetInput(out var input))
+			input.OnActivate?.Invoke();
+	}
 
-    private void HandleHitboxContact(HitboxType type) {
-        if (type == HitboxType.Front) {
-            GameManager.StartPause();
-            return;
-        }
+	//Hitboxes
+	private void HandleHitboxContact(HitboxType type){
+		if (type == HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f){
+			GameManager.LoseGame();
+			return;
+		}
 
-        if (_tweener == null || _tweener.IsComplete())
-        {
-            return;
-        }
+		_tweener.Kill();
+		_camera.transform.DOShakePosition(0.1f, 1).OnComplete(() => _camera.transform.position = _cameraBasePosition);
+		// if (_currentPath > _previousPath)
+		// 	_inputBuffer.InsertInput(_rightTurnInput);
+		// else
+		// 	_inputBuffer.InsertInput(_leftTurnInput);
+		_currentPath = _previousPath;
+		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
+	}
 
-        if (_tweener.ElapsedPercentage(false) >= 0.5f)
-        {
-            _camera.transform.DOShakePosition(1);
-            return;
-        }
-        
-        _tweener.Kill();
-        _currentPath = _previousPath;
-        _tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f);
-    }
+	//Game Events
+	private void Die(){
+		_tweener.Kill();
+		_camera.transform.DOShakePosition(1).OnComplete(() => { _camera.transform.position = _cameraBasePosition; });
+		_camera.GetComponent<Animator>().Play("SoundDeath");
+		GetComponent<AudioSource>().Play();
+		_smoke.Play();
+	}
+
+	private void Pause(bool paused){
+		_paused = paused;
+	}
 }
