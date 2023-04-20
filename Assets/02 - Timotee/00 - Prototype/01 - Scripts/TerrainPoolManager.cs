@@ -40,6 +40,34 @@ public class TerrainPoolManager : MonoBehaviour{
 		_pool.Add(key, list);
 		return value;
 	}
+	
+	public GameObject CreatePrefab(ModuleObstacle model){
+		string key = model.name;
+		List<GameObject> list;
+		GameObject value;
+
+		if (_pool.ContainsKey(key)){
+			list = _pool[key];
+			value = list.FirstOrDefault(obj => !obj.activeSelf);
+			if (value != null){
+				value.SetActive(true);
+				return value;
+			}
+
+			value = Instantiate(model.gameObject);
+			value.name = model.name;
+			list.Add(value);
+
+			return value;
+		}
+
+		list = new List<GameObject>();
+		value = Instantiate(model.gameObject);
+		value.name = model.name;
+		list.Add(value);
+		_pool.Add(key, list);
+		return value;
+	}
 
 	public void AddToPool(List<GameObject> list){
 		foreach ( var tile in list ){
