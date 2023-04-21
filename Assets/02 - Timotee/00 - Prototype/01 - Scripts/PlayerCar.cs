@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -112,10 +113,6 @@ public class PlayerCar : MonoBehaviour{
 
 		_tweener.Kill();
 		_camera.transform.DOShakePosition(0.1f, 1).OnComplete(() => _camera.transform.position = _cameraBasePosition);
-		// if (_currentPath > _previousPath)
-		// 	_inputBuffer.InsertInput(_rightTurnInput);
-		// else
-		// 	_inputBuffer.InsertInput(_leftTurnInput);
 		_currentPath = _previousPath;
 		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
 	}

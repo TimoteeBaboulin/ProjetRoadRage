@@ -23,6 +23,7 @@ public class TerrainPoolManager : MonoBehaviour{
 			value = list.FirstOrDefault(obj => !obj.activeSelf);
 			if (value != null){
 				value.SetActive(true);
+				Debug.Log("Saved 1 instantiation.");
 				return value;
 			}
 
@@ -41,30 +42,30 @@ public class TerrainPoolManager : MonoBehaviour{
 		return value;
 	}
 	
-	public GameObject CreatePrefab(ModuleObstacle model){
+	public ModuleObstacle CreatePrefab(ModuleObstacle model){
 		string key = model.name;
 		List<GameObject> list;
-		GameObject value;
+		ModuleObstacle value;
 
 		if (_pool.ContainsKey(key)){
 			list = _pool[key];
-			value = list.FirstOrDefault(obj => !obj.activeSelf);
-			if (value != null){
-				value.SetActive(true);
-				return value;
+			GameObject tempValue = list.FirstOrDefault(obj => !obj.activeSelf);
+			if (tempValue != null){
+				tempValue.gameObject.SetActive(true);
+				return tempValue.GetComponent<ModuleObstacle>();
 			}
 
-			value = Instantiate(model.gameObject);
+			value = Instantiate(model);
 			value.name = model.name;
-			list.Add(value);
+			list.Add(value.gameObject);
 
 			return value;
 		}
 
 		list = new List<GameObject>();
-		value = Instantiate(model.gameObject);
+		value = Instantiate(model);
 		value.name = model.name;
-		list.Add(value);
+		list.Add(value.gameObject);
 		_pool.Add(key, list);
 		return value;
 	}
