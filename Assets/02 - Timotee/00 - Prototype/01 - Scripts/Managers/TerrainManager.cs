@@ -55,13 +55,17 @@ public class TerrainManager : MonoBehaviour{
 	}
 	private void Start(){
 		InitialiseTerrain();
-		InitialiseObstacles();
 	}
 
 	private void OnEnable(){
 		GameManager.OnPause += (paused) => { _paused = paused; };
-
+		GameManager.OnGameStart += InitialiseObstacles;
 		TerrainEnd.OnDisable += SpawnTerrain;
+	}
+
+	private void OnDisable(){
+		GameManager.OnGameStart -= InitialiseObstacles;
+		TerrainEnd.OnDisable -= SpawnTerrain;
 	}
 
 	private void InitialiseTerrain(){
@@ -97,8 +101,6 @@ public class TerrainManager : MonoBehaviour{
 
 	private void Update(){
 		if (_paused) return;
-		
-		Debug.Log("Roadwork TL: " + _roadworkTotalLength + "\nObstacle TL: " + _obstacleTotalLength);
 
 		float distance = Time.deltaTime * _speed;
 		Vector3 tilePosition;
@@ -109,6 +111,8 @@ public class TerrainManager : MonoBehaviour{
 			tile.transform.position = tilePosition;
 		}
 
+		if (!GameManager.GameRunning) return;
+		
 		_obstacleTotalLength -= distance;
 		if (_roadworkTotalLength > 0) _roadworkTotalLength -= distance;
 
@@ -143,6 +147,8 @@ public class TerrainManager : MonoBehaviour{
 		
 		if (_roadworkLength == 0 && Random.Range(0f, 1f) < 0.1f){
 			StartRoadwork();
+			InstantiateObstacle(true);
+			return;
 		}
 		InstantiateObstacle(false);
 	}
@@ -171,10 +177,11 @@ public class TerrainManager : MonoBehaviour{
 		}
 
 		Vector3 obstaclePosition = new Vector3(0, 0, _obstacleTotalLength + 50);
-		_obstacleTotalLength += obstacle.Length;
+		
 		
 		obstacle.transform.position = obstaclePosition;
 		obstacle.transform.localScale = scale;
+		_obstacleTotalLength = obstacle.End.transform.position.z;
 
 		return obstacle;
 	}

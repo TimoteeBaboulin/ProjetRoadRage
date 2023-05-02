@@ -112,6 +112,7 @@ public class PlayerCar : MonoBehaviour{
 		}
 
 		_tweener.Kill();
+		_cameraBasePosition = _camera.transform.position;
 		_camera.transform.DOShakePosition(0.1f, 1).OnComplete(() => _camera.transform.position = _cameraBasePosition);
 		_currentPath = _previousPath;
 		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
@@ -120,6 +121,7 @@ public class PlayerCar : MonoBehaviour{
 	//Game Events
 	private void Die(){
 		_tweener.Kill();
+		_cameraBasePosition = _camera.transform.position;
 		_camera.transform.DOShakePosition(1).OnComplete(() => { _camera.transform.position = _cameraBasePosition; });
 		_camera.GetComponent<Animator>().Play("SoundDeath");
 		GetComponent<AudioSource>().Play();

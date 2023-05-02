@@ -8,14 +8,22 @@ public class GameManager : MonoBehaviour{
 	public static event Action<bool> OnPause;
 	public static event Action OnGameLost;
 	public static event Action OnRestart;
+	public static event Action OnGameStart;
 #endregion
 
 	public static bool Paused => Instance._paused;
 	private bool _paused;
 
+	public static bool GameRunning => Instance._gameRunning;
+	private bool _gameRunning;
+
 	private void Awake(){
-		if (Instance != null) Destroy(gameObject);
-		else Instance = this;
+		if (Instance != null){
+			Destroy(gameObject);
+			return;
+		}
+		Instance = this;
+		_gameRunning = false;
 	}
 
 	public static void StartPause(){
@@ -35,5 +43,10 @@ public class GameManager : MonoBehaviour{
 
 	public static void RestartGame(){
 		OnRestart?.Invoke();
+	}
+
+	public static void StartGame(){
+		Instance._gameRunning = true;
+		OnGameStart?.Invoke();
 	}
 }
