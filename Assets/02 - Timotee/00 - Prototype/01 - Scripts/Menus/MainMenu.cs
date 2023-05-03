@@ -23,10 +23,12 @@ public class MainMenu : MonoBehaviour{
 
     private void OnEnable(){
         GameManager.OnGameLost += GameOver;
+        GameManager.OnRestart += Restart;
     }
 
     private void OnDisable(){
         GameManager.OnGameLost -= GameOver;
+        GameManager.OnRestart -= Restart;
     }
 
     public void ChangeVolumeBGM(float value){
@@ -50,7 +52,11 @@ public class MainMenu : MonoBehaviour{
     }
 
     public void GameOver(){
-        Debug.Log("GameOver");
         GameOverMenu.SetActive(true);
+    }
+
+    public void Restart(){
+        MainMenuParent.SetActive(true);
+        GameOverMenu.SetActive(false);
     }
 }

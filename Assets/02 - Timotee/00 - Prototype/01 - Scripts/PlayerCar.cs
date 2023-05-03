@@ -125,7 +125,7 @@ public class PlayerCar : MonoBehaviour{
 		_tweener.Kill();
 		_cameraBasePosition = _camera.transform.position;
 		_camera.transform.DOShakePosition(1).OnComplete(() => { _camera.transform.position = _cameraBasePosition; });
-		_camera.GetComponent<Animator>().Play("SoundDeath");
+		MusicManager.FadeOut();
 		GetComponent<AudioSource>().Play();
 		_smoke.Play();
 	}
@@ -133,6 +133,9 @@ public class PlayerCar : MonoBehaviour{
 	private void Restart(){
 		_smoke.Stop();
 		_smoke.Clear();
+		_currentPath = 1;
+		transform.position = new Vector3(0, 0.5f, 0);
+		_camera.GetComponent<Animator>().Play("SoundStart");
 	}
 
 	private void Pause(bool paused){

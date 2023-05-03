@@ -255,6 +255,9 @@ public class TerrainManager : MonoBehaviour{
 		foreach(var obstacle in _obstacles.Where(obj => obj.gameObject.activeSelf)){
 			obstacle.gameObject.SetActive(false);
 		}
+		foreach(var obstacle in _roadworks.Where(obj => obj.gameObject.activeSelf)){
+			obstacle.gameObject.SetActive(false);
+		}
 	}
 }
 

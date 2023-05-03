@@ -23,8 +23,7 @@ public class InputManager : MonoBehaviour{
 			Destroy(gameObject);
 			return;
 		}
-
-		Debug.Log("Awake");
+		
 		Instance = this;
 		_mainControls = new MainControls();
 		_camera = Camera.main;
@@ -33,18 +32,20 @@ public class InputManager : MonoBehaviour{
 	private void Start(){
 		_mainControls.Touch.PrimaryTouch.started += ctx => StartSwipe(ctx);
 		_mainControls.Touch.PrimaryTouch.canceled += ctx => EndSwipe(ctx);
+		_camera = Camera.main;
+		gameObject.SetActive(false);
 	}
 
 	private void OnEnable(){
-		Debug.Log("Enable");
-		_camera = Camera.main;
+		
 		_mainControls.Enable();
+		
 	}
 
 	private void OnDisable(){
 		_mainControls.Disable();
 	}
-
+	
 	private void StartSwipe(InputAction.CallbackContext context){
 		_startSwipe = _mainControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>();
 	}

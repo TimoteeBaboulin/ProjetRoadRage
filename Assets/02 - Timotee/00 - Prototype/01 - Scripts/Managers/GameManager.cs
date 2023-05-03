@@ -37,16 +37,20 @@ public class GameManager : MonoBehaviour{
 	}
 
 	public static void LoseGame(){
+		InputManager.Instance.gameObject.SetActive(false);
 		OnGameLost?.Invoke();
 		StartPause();
 	}
 
 	public static void RestartGame(){
 		OnRestart?.Invoke();
+		Instance._gameRunning = false;
 		StopPause();
 	}
 
 	public static void StartGame(){
+		InputManager.Instance.gameObject.SetActive(true);
+		
 		Instance._gameRunning = true;
 		OnGameStart?.Invoke();
 	}
