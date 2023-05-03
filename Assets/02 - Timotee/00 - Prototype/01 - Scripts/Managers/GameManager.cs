@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour{
 
 	public static void RestartGame(){
 		OnRestart?.Invoke();
+		StopPause();
 	}
 
 	public static void StartGame(){

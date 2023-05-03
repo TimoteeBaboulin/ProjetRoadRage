@@ -61,11 +61,15 @@ public class TerrainManager : MonoBehaviour{
 		GameManager.OnPause += (paused) => { _paused = paused; };
 		GameManager.OnGameStart += InitialiseObstacles;
 		TerrainEnd.OnDisable += SpawnTerrain;
+
+		GameManager.OnRestart += DisableObstacles;
 	}
 
 	private void OnDisable(){
 		GameManager.OnGameStart -= InitialiseObstacles;
 		TerrainEnd.OnDisable -= SpawnTerrain;
+		
+		GameManager.OnRestart -= DisableObstacles;
 	}
 
 	private void InitialiseTerrain(){
@@ -244,6 +248,13 @@ public class TerrainManager : MonoBehaviour{
 
 		roadwork.transform.position = position;
 		roadwork.transform.localScale = scale;
+	}
+
+	private void DisableObstacles(){
+		Debug.Log("Disable Obstacles");
+		foreach(var obstacle in _obstacles.Where(obj => obj.gameObject.activeSelf)){
+			obstacle.gameObject.SetActive(false);
+		}
 	}
 }
 

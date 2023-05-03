@@ -1,21 +1,32 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Playables;
 
 public class MainMenu : MonoBehaviour{
+    public GameObject MainMenuParent;
     public Canvas MainMenuCanvas;
 
     public AudioMixer AudioMixer;
     public PlayableDirector TimelineDirector;
     public PlayableAsset StartGameTimeline;
+
+    public GameObject GameOverMenu;
     
     public void StartGame(){
-        MainMenuCanvas.gameObject.SetActive(false);
+        MainMenuParent.SetActive(false);
         GameManager.StartGame();
-        Debug.Log("Play");
         TimelineDirector.playableAsset = StartGameTimeline;
         TimelineDirector.Play();
+    }
+
+    private void OnEnable(){
+        GameManager.OnGameLost += GameOver;
+    }
+
+    private void OnDisable(){
+        GameManager.OnGameLost -= GameOver;
     }
 
     public void ChangeVolumeBGM(float value){
@@ -36,5 +47,10 @@ public class MainMenu : MonoBehaviour{
         #else
             Application.Quit();
         #endif
+    }
+
+    public void GameOver(){
+        Debug.Log("GameOver");
+        GameOverMenu.SetActive(true);
     }
 }

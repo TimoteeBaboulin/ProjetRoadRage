@@ -48,13 +48,15 @@ public class PlayerCar : MonoBehaviour{
 		InputManager.OnSwipe += HandleSwipe;
 		GameManager.OnPause += Pause;
 		GameManager.OnGameLost += Die;
+		GameManager.OnRestart += Restart;
 	}
 
 	private void OnDisable(){
 		PlayerHitbox.OnContact -= HandleHitboxContact;
 		InputManager.OnSwipe -= HandleSwipe;
-		GameManager.OnPause += Pause;
-		GameManager.OnGameLost += Die;
+		GameManager.OnPause -= Pause;
+		GameManager.OnGameLost -= Die;
+		GameManager.OnRestart -= Restart;
 	}
 
 	//Editor only
@@ -126,6 +128,11 @@ public class PlayerCar : MonoBehaviour{
 		_camera.GetComponent<Animator>().Play("SoundDeath");
 		GetComponent<AudioSource>().Play();
 		_smoke.Play();
+	}
+
+	private void Restart(){
+		_smoke.Stop();
+		_smoke.Clear();
 	}
 
 	private void Pause(bool paused){
