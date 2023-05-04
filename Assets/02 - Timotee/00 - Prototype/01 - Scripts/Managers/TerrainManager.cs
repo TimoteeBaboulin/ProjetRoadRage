@@ -9,6 +9,9 @@ using Random = UnityEngine.Random;
 public class TerrainManager : MonoBehaviour{
 	public static TerrainManager Instance;
 
+	public static float SpeedIncrease =>
+		Instance._speedIncreaseCurve.Evaluate(Instance._timer / Instance._timeToReachMaxSpeed);
+	
 	#region Prefabs
 	[SerializeField] private GameObject _terrainPrefab;
 	[SerializeField] private ModuleObstacle[] _obstaclePrefabs;
@@ -31,8 +34,8 @@ public class TerrainManager : MonoBehaviour{
 	[SerializeField] private Transform _roadworkParent;
 	#endregion
 
-	public float Speed => _speed;
-	[SerializeField] private float _speed;
+	
+	
 	[SerializeField] private int _renderDistance;
 
 	private bool _paused;
@@ -42,6 +45,19 @@ public class TerrainManager : MonoBehaviour{
 	private int _roadworkSide;
 	private float _roadworkTotalLength;
 	private float _roadworkLength;
+
+	//Speed Increase Relevent
+	[Header("Speed Settings")]
+	[SerializeField] private float _speed;
+	public float Speed => _speed;
+	private bool _maxSpeedReached;
+	
+	[SerializeField] private float _minSpeed;
+	[SerializeField] private float _maxSpeed;
+	[SerializeField] private AnimationCurve _speedIncreaseCurve;
+	[SerializeField] private float _timeToReachMaxSpeed;
+
+	private float _timer;
 
 	private void Awake(){
 		if (Instance != null) Destroy(gameObject);
@@ -59,17 +75,17 @@ public class TerrainManager : MonoBehaviour{
 
 	private void OnEnable(){
 		GameManager.OnPause += (paused) => { _paused = paused; };
-		GameManager.OnGameStart += InitialiseObstacles;
+		GameManager.OnGameStart += StartGame;
+		GameManager.OnRestart += Restart;
+		
 		TerrainEnd.OnDisable += SpawnTerrain;
-
-		GameManager.OnRestart += DisableObstacles;
 	}
 
 	private void OnDisable(){
-		GameManager.OnGameStart -= InitialiseObstacles;
-		TerrainEnd.OnDisable -= SpawnTerrain;
+		GameManager.OnGameStart -= StartGame;
+		GameManager.OnRestart -= Restart;
 		
-		GameManager.OnRestart -= DisableObstacles;
+		TerrainEnd.OnDisable -= SpawnTerrain;
 	}
 
 	private void InitialiseTerrain(){
@@ -83,12 +99,27 @@ public class TerrainManager : MonoBehaviour{
 		}
 	}
 	private void InitialiseObstacles(){
-		_obstacleTotalLength = 150;
-		while ( _obstacleTotalLength < _renderDistance ){
-			SpawnObstacle();
-		}
+		_obstacleTotalLength = 400;
+		// while ( _obstacleTotalLength < _renderDistance ){
+		// 	SpawnObstacle();
+		// }
 	}
 
+	private void StartGame(){
+		_timer = 0;
+		InitialiseObstacles();
+	}
+
+	private void Restart(){
+		_timer = 0;
+		_speed = _minSpeed;
+		_maxSpeedReached = false;
+		_obstacleTotalLength = 0;
+		_roadworkTotalLength = 0;
+		_roadworkLength = 0;
+		DisableObstacles();
+	}
+	
 	private void SpawnTerrain(){
 		GameObject terrain = TerrainPoolManager.Instance.CreatePrefab(_terrainPrefab);
 		if (!_map.Contains(terrain)){
@@ -117,18 +148,22 @@ public class TerrainManager : MonoBehaviour{
 
 		if (!GameManager.GameRunning) return;
 		
+		HandleSpeed();
+		
 		_obstacleTotalLength -= distance;
-		if (_roadworkTotalLength > 0) _roadworkTotalLength -= distance;
-
+		if (_roadworkTotalLength > 0){
+			_roadworkTotalLength -= distance;
+		}
+		
 		for (int x = 0; x < _roadworks.Count; x++){
 			GameObject tile = _roadworks[x];
 			tilePosition = tile.transform.position;
 			tilePosition.z -= distance;
 			tile.transform.position = tilePosition;
-			
-			if (_obstacleTotalLength < _renderDistance){
-				SpawnRoadwork();
-			}
+		}
+
+		if (_roadworkTotalLength < _renderDistance){
+			SpawnRoadwork();
 		}
 		
 		for (int x = 0; x < _obstacles.Count; x++){
@@ -136,10 +171,10 @@ public class TerrainManager : MonoBehaviour{
 			tilePosition = tile.transform.position;
 			tilePosition.z -= distance;
 			tile.transform.position = tilePosition;
-			
-			if (_obstacleTotalLength < _renderDistance){
-				SpawnObstacle();
-			}
+		}
+		
+		if (_obstacleTotalLength < _renderDistance){
+			SpawnObstacle();
 		}
 	}
 
@@ -251,13 +286,25 @@ public class TerrainManager : MonoBehaviour{
 	}
 
 	private void DisableObstacles(){
-		Debug.Log("Disable Obstacles");
 		foreach(var obstacle in _obstacles.Where(obj => obj.gameObject.activeSelf)){
 			obstacle.gameObject.SetActive(false);
 		}
 		foreach(var obstacle in _roadworks.Where(obj => obj.gameObject.activeSelf)){
 			obstacle.gameObject.SetActive(false);
 		}
+	}
+
+	private void HandleSpeed(){
+		if (_maxSpeedReached) return;
+
+		_timer += Time.deltaTime;
+		if (_timer > _timeToReachMaxSpeed){
+			_maxSpeedReached = true;
+			_speed = _maxSpeed;
+			return;
+		}
+
+		_speed = Mathf.Lerp(_minSpeed, _maxSpeed, _speedIncreaseCurve.Evaluate(_timer / _timeToReachMaxSpeed));
 	}
 }
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.ComponentModel.Design.Serialization;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -15,6 +17,8 @@ public class PlayerCar : MonoBehaviour{
 	private static CustomInput _rightTurnInput;
 	private static CustomInput _leftTurnInput;
 
+	[SerializeField] private Transform _front;
+	
 	private Camera _camera;
 	private int _currentPath;
 	private int _previousPath;
@@ -26,6 +30,27 @@ public class PlayerCar : MonoBehaviour{
 	[SerializeField] private ParticleSystem _smoke;
 	private bool _paused;
 	private InputBuffer _inputBuffer;
+
+	private GameObject _snowplow;
+	private Coroutine _killSnowPlowCoroutine;
+	
+	public void SpawnItemAtFront(GameObject spawn, float time = 15){
+		if (_killSnowPlowCoroutine!=null){
+			StopCoroutine(_killSnowPlowCoroutine);
+			Destroy(_snowplow);
+		}
+		_snowplow = Instantiate(spawn, _front);
+		_killSnowPlowCoroutine = StartCoroutine(DestroyObjectCoroutine(time));
+	}
+
+	private IEnumerator DestroyObjectCoroutine(float time){
+		yield return new WaitForSeconds(time);
+		Destroy(_snowplow);
+		_killSnowPlowCoroutine = null;
+	}
+	private void DestroyObject(GameObject obj){
+		Destroy(obj);
+	}
 
 	private void Awake(){
 		_camera = Camera.main;
@@ -50,7 +75,6 @@ public class PlayerCar : MonoBehaviour{
 		GameManager.OnGameLost += Die;
 		GameManager.OnRestart += Restart;
 	}
-
 	private void OnDisable(){
 		PlayerHitbox.OnContact -= HandleHitboxContact;
 		InputManager.OnSwipe -= HandleSwipe;
@@ -76,7 +100,6 @@ public class PlayerCar : MonoBehaviour{
 		else
 			TurnRight();
 	}
-
 	private void TurnRight(){
 		if (_paused || _currentPath == 2) return;
 		if (!CanMove){
@@ -86,9 +109,8 @@ public class PlayerCar : MonoBehaviour{
 
 		_previousPath = _currentPath;
 		_currentPath++;
-		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f).OnComplete(OnCanMove);
+		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f / (TerrainManager.Instance.Speed / 60)).OnComplete(OnCanMove);
 	}
-
 	private void TurnLeft(){
 		if (_paused || _currentPath == 0) return;
 		if (!CanMove){
@@ -98,9 +120,8 @@ public class PlayerCar : MonoBehaviour{
 
 		_previousPath = _currentPath;
 		_currentPath--;
-		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f).OnComplete(OnCanMove);
+		_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f / (TerrainManager.Instance.Speed / 60)).OnComplete(OnCanMove);
 	}
-
 	private void OnCanMove(){
 		if (_inputBuffer.TryGetInput(out var input))
 			input.OnActivate?.Invoke();
@@ -109,6 +130,7 @@ public class PlayerCar : MonoBehaviour{
 	//Hitboxes
 	private void HandleHitboxContact(HitboxType type){
 		if (type == HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f){
+			if (_snowplow != null) return;
 			GameManager.LoseGame();
 			return;
 		}
@@ -129,15 +151,13 @@ public class PlayerCar : MonoBehaviour{
 		GetComponent<AudioSource>().Play();
 		_smoke.Play();
 	}
-
 	private void Restart(){
 		_smoke.Stop();
 		_smoke.Clear();
 		_currentPath = 1;
-		transform.position = new Vector3(0, 0.5f, 0);
+		transform.position = new Vector3(0, 1, 0);
 		_camera.GetComponent<Animator>().Play("SoundStart");
 	}
-
 	private void Pause(bool paused){
 		_paused = paused;
 	}
