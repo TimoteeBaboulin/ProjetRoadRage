@@ -14,7 +14,7 @@ public class InputBuffer : MonoBehaviour{
 	private List<CustomInput> _inputs;
 
 	private void Awake(){
-		_inputs = new();
+		_inputs = new List<CustomInput>();
 	}
 
 	private void Update(){
@@ -29,11 +29,13 @@ public class InputBuffer : MonoBehaviour{
 	public void AddInput(CustomInput input){
 		_inputs.Add(input);
 	}
+
 	public void InsertInput(CustomInput input){
 		_inputs.Insert(0, input);
 	}
+
 	public bool TryGetInput(out CustomInput input){
-		if (_inputs.Count == 0){
+		if (_inputs.Count==0){
 			input = null;
 			return false;
 		}
