@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
 
-public class CameraTransform : MonoBehaviour{
+public class CameraManager : MonoBehaviour{
 	private Vector3 _position;
 	private Quaternion _rotation;
 
 	private Transform _transform;
-	
+
 	private void Awake(){
 		_transform = transform;
 
