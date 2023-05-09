@@ -24,7 +24,6 @@ namespace Managers{
 				value = list.FirstOrDefault(obj => !obj.activeSelf);
 				if (value!=null){
 					value.SetActive(true);
-					Debug.Log("Saved 1 instantiation.");
 					return value;
 				}
 

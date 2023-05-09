@@ -33,13 +33,13 @@ namespace Managers{
 
 		public static void LoseGame(){
 			InputManager.Instance.gameObject.SetActive(false);
+			Instance._gameRunning = false;
 			OnGameLost?.Invoke();
 			StartPause();
 		}
 
 		public static void RestartGame(){
 			OnRestart?.Invoke();
-			Instance._gameRunning = false;
 			StopPause();
 		}
 

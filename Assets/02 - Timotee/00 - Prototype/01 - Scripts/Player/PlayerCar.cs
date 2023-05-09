@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Managers;
+using PowerUps;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player{
@@ -16,17 +19,32 @@ namespace Player{
 		private static CustomInput _rightTurnInput;
 		private static CustomInput _leftTurnInput;
 
+		public static event Action<PowerUp> OnPowerUp; 
+
 		[SerializeField] private Transform _front;
 
 		[SerializeField] private ParticleSystem _smoke;
 
+	#region Suspensions
+		private Animator _animator;
+		private bool _isUp;
+		private float _suspensionCountdown;
+	#endregion
+
+	#region Camera
 		private Camera _camera;
 		private Vector3 _cameraBasePosition;
+	#endregion
+
+	#region Movement
 		private int _currentPath;
 		private InputBuffer _inputBuffer;
-		private Coroutine _killSnowPlowCoroutine;
-		private bool _paused;
 		private int _previousPath;
+	#endregion
+		
+		private float _snowplowCountdown;
+		private bool _paused;
+		
 
 		private GameObject _snowplow;
 
@@ -37,6 +55,7 @@ namespace Player{
 			_camera = Camera.main;
 			_inputBuffer = GetComponent<InputBuffer>();
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
+			_animator = GetComponent<Animator>();
 		}
 
 		//Initialise fields
@@ -75,20 +94,49 @@ namespace Player{
 			GameManager.OnRestart -= Restart;
 		}
 
-		public void SpawnItemAtFront(GameObject spawn, float time = 15){
-			if (_killSnowPlowCoroutine!=null){
-				StopCoroutine(_killSnowPlowCoroutine);
-				Destroy(_snowplow);
+		public void GogoGadgetSuspension(float time = 10){
+			if (_suspensionCountdown > 0){
+				_suspensionCountdown = time;
+				return;
 			}
-
-			_snowplow = Instantiate(spawn, _front);
-			_killSnowPlowCoroutine = StartCoroutine(DestroyObjectCoroutine(time));
+			
+			_animator.Play("GogoGadgetSuspension");
+			_suspensionCountdown = time;
+			StartCoroutine(SuspensionCoroutine());
 		}
 
-		private IEnumerator DestroyObjectCoroutine(float time){
-			yield return new WaitForSeconds(time);
+		private IEnumerator SuspensionCoroutine(){
+			while(_suspensionCountdown > 0){
+				yield return null;
+				if (GameManager.Paused) continue;
+				_suspensionCountdown -= Time.deltaTime;
+			}
+			_isUp = false;
+			_animator.Play("SuspensionRemake");
+		}
+		
+		public void UsePowerUp(PowerUp powerUp){
+			OnPowerUp?.Invoke(powerUp);
+		}
+		
+		public void SpawnSnowPlow(GameObject spawn, float time = 15){
+			if (_snowplowCountdown > 0){
+				_snowplowCountdown = time;
+				return;
+			}
+
+			_snowplowCountdown = time;
+			_snowplow = Instantiate(spawn, _front);
+			StartCoroutine(DestroySnowPlowCoroutine());
+		}
+
+		private IEnumerator DestroySnowPlowCoroutine(){
+			while(_snowplowCountdown > 0){
+				yield return null;
+				if (GameManager.Paused) continue;
+				_snowplowCountdown -= Time.deltaTime;
+			}
 			Destroy(_snowplow);
-			_killSnowPlowCoroutine = null;
 		}
 
 		//Controls
@@ -100,7 +148,7 @@ namespace Player{
 		}
 
 		private void TurnRight(){
-			if (_paused || _currentPath==2) return;
+			if (_paused || !GameManager.GameRunning || _currentPath==2) return;
 			if (!CanMove){
 				_inputBuffer.AddInput(_rightTurnInput);
 				return;
@@ -113,7 +161,7 @@ namespace Player{
 		}
 
 		private void TurnLeft(){
-			if (_paused || _currentPath==0) return;
+			if (_paused || !GameManager.GameRunning || _currentPath==0) return;
 			if (!CanMove){
 				_inputBuffer.AddInput(_leftTurnInput);
 				return;
@@ -132,6 +180,7 @@ namespace Player{
 
 		//Hitboxes
 		private void HandleHitboxContact(HitboxType type){
+			if (_suspensionCountdown > 0) return;
 			if (type==HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f){
 				if (_snowplow!=null) return;
 				GameManager.LoseGame();
@@ -162,6 +211,7 @@ namespace Player{
 			transform.position = new Vector3(0, 1, 0);
 			_camera.GetComponent<Animator>().Play("SoundStart");
 			Destroy(_snowplow);
+			_animator.PlayInFixedTime("SuspensionRemake", 0, 0.01f);
 		}
 
 		private void Pause(bool paused){

@@ -7,7 +7,8 @@ namespace PowerUps{
 
 		public override void Activate(PlayerCar player){
 			Destroy(gameObject);
-			player.SpawnItemAtFront(_snowplowPrefab, _powerUpTime);
+			player.SpawnSnowPlow(_snowplowPrefab, _powerUp.Time);
+			player.UsePowerUp(_powerUp);
 		}
 	}
 }
