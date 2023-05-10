@@ -5,7 +5,6 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Managers;
 using PowerUps;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player{
@@ -19,7 +18,15 @@ namespace Player{
 		private static CustomInput _rightTurnInput;
 		private static CustomInput _leftTurnInput;
 
-		public static event Action<PowerUp> OnPowerUp; 
+		public static float LaneChangeTime => 0.2f / (1 + TerrainManager.SpeedIncrease);
+		public static PlayerCar Player;
+
+	#region events
+		public static event Action<PowerUp> OnPowerUp;
+		public static event Action<int> OnLineChange;
+		public static event Action<bool> OnSideContact;
+	#endregion
+		
 
 		[SerializeField] private Transform _front;
 
@@ -27,7 +34,6 @@ namespace Player{
 
 	#region Suspensions
 		private Animator _animator;
-		private bool _isUp;
 		private float _suspensionCountdown;
 	#endregion
 
@@ -44,31 +50,37 @@ namespace Player{
 		
 		private float _snowplowCountdown;
 		private bool _paused;
-		
 
+		private float _dangerCountdown;
+		
 		private GameObject _snowplow;
 
 		private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
 		private bool CanMove => _tweener==null || !_tweener.IsActive() || _tweener.IsComplete();
 
 		private void Awake(){
-			_camera = Camera.main;
 			_inputBuffer = GetComponent<InputBuffer>();
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
 			_animator = GetComponent<Animator>();
+			if (Player != null) return;
+			Player = this;
 		}
 
 		//Initialise fields
 		private void Start(){
+			_camera = CameraManager.Camera;
 			_currentPath = 1;
 			_previousPath = 1;
 			_cameraBasePosition = _camera.transform.position;
 			_rightTurnInput = new CustomInput(TurnRight);
 			_leftTurnInput = new CustomInput(TurnLeft);
+			
 		}
 
 		//Editor only
 		private void Update(){
+			if (_dangerCountdown > 0)
+				_dangerCountdown -= Time.deltaTime;
 			#if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 				TurnLeft();
@@ -82,7 +94,6 @@ namespace Player{
 			PlayerHitbox.OnContact += HandleHitboxContact;
 			InputManager.OnSwipe += HandleSwipe;
 			GameManager.OnPause += Pause;
-			GameManager.OnGameLost += Die;
 			GameManager.OnRestart += Restart;
 		}
 
@@ -90,7 +101,6 @@ namespace Player{
 			PlayerHitbox.OnContact -= HandleHitboxContact;
 			InputManager.OnSwipe -= HandleSwipe;
 			GameManager.OnPause -= Pause;
-			GameManager.OnGameLost -= Die;
 			GameManager.OnRestart -= Restart;
 		}
 
@@ -111,7 +121,6 @@ namespace Player{
 				if (GameManager.Paused) continue;
 				_suspensionCountdown -= Time.deltaTime;
 			}
-			_isUp = false;
 			_animator.Play("SuspensionRemake");
 		}
 		
@@ -156,7 +165,7 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath++;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f / (TerrainManager.Instance.Speed / 60))
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
@@ -169,39 +178,65 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath--;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.2f / (TerrainManager.Instance.Speed / 60))
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
 		private void OnCanMove(){
 			if (_inputBuffer.TryGetInput(out var input))
 				input.OnActivate?.Invoke();
+			
+			OnLineChange?.Invoke(_currentPath);
 		}
 
 		//Hitboxes
 		private void HandleHitboxContact(HitboxType type){
-			if (_suspensionCountdown > 0) return;
-			if (type==HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f){
-				if (_snowplow!=null) return;
-				GameManager.LoseGame();
-				return;
-			}
-
-			_tweener.Kill();
-			_cameraBasePosition = _camera.transform.position;
-			_camera.transform.DOShakePosition(0.1f).OnComplete(() => _camera.transform.position = _cameraBasePosition);
-			_currentPath = _previousPath;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
+			if (type==HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f)
+				FrontContact();
+			else
+				SideContact();
 		}
 
+		private void FrontContact(){
+			if (_snowplow!=null) return;
+			Die();
+		}
+
+		private void SideContact(){
+			if (_dangerCountdown <= 0 || _dangerCountdown / PoliceManager.DangerTime > 0.85f){
+				_currentPath = _previousPath;
+				_tweener.Kill();
+				_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
+				
+				CameraManager.ShakeCamera(0.1f);
+				CameraManager.DangerCamera();
+
+				_dangerCountdown = PoliceManager.DangerTime;
+				OnSideContact?.Invoke(false);
+				return;
+			}
+			
+			Arrested();
+			OnSideContact?.Invoke(true);
+		}
+		
 		//Game Events
 		private void Die(){
+			GameManager.LoseGame();
+			
 			_tweener.Kill();
-			_cameraBasePosition = _camera.transform.position;
-			_camera.transform.DOShakePosition(1).OnComplete(() => { _camera.transform.position = _cameraBasePosition; });
+			CameraManager.ShakeCamera(1);
 			MusicManager.FadeOut();
 			GetComponent<AudioSource>().Play();
 			_smoke.Play();
+		}
+		
+		private void Arrested(){
+			GameManager.LoseGame();
+			
+			_tweener.Kill();
+			CameraManager.ShakeCamera(1);
+			MusicManager.FadeOut();
 		}
 
 		private void Restart(){
@@ -209,7 +244,8 @@ namespace Player{
 			_smoke.Clear();
 			_currentPath = 1;
 			transform.position = new Vector3(0, 1, 0);
-			_camera.GetComponent<Animator>().Play("SoundStart");
+			// _camera.GetComponent<Animator>().Play("SoundStart");
+			MusicManager.FadeIn();
 			Destroy(_snowplow);
 			_animator.PlayInFixedTime("SuspensionRemake", 0, 0.01f);
 		}

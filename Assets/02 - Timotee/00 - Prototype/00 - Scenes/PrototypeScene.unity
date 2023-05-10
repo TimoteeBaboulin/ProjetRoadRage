@@ -1073,6 +1073,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203252851}
   m_CullTransparentMesh: 1
+--- !u!4 &233330770 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 876387040}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &235554729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3665,6 +3671,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859131595}
   m_CullTransparentMesh: 1
+--- !u!1001 &876387040
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1594474810}
+    m_Modifications:
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_Name
+      value: PoliceCar
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 752ee95911347ff4daaa0592670f2533, type: 3}
 --- !u!1 &880217681
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,6 +3951,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910481457}
   m_CullTransparentMesh: 1
+--- !u!1001 &925361747
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1594474810}
+    m_Modifications:
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_Name
+      value: PoliceCar (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+  m_SourcePrefab: {fileID: 100100000, guid: 752ee95911347ff4daaa0592670f2533, type: 3}
+--- !u!4 &925361748 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 925361747}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &934129307
 GameObject:
   m_ObjectHideFlags: 0
@@ -4268,6 +4419,14 @@ PlayableDirector:
     value: {fileID: 719767768}
   - key: {fileID: 8893672705779703563, guid: 4bdb1390bd30b3843acdaf539de88c6d, type: 2}
     value: {fileID: 1227906498}
+  - key: {fileID: -304962485431523070, guid: f7d13983d8f439f48907942046f37f74, type: 2}
+    value: {fileID: 1004165328}
+  - key: {fileID: 7098375068147093845, guid: 3010ab11281b01f47b26ae809d529d19, type: 2}
+    value: {fileID: 1004165325}
+  - key: {fileID: -649883233595907564, guid: 3010ab11281b01f47b26ae809d529d19, type: 2}
+    value: {fileID: 1453865356}
+  - key: {fileID: -5857284950793833229, guid: 3010ab11281b01f47b26ae809d529d19, type: 2}
+    value: {fileID: 2006387765}
   m_ExposedReferences:
     m_References:
     - def6824e4c263c249b1d78a56a34fce2: {fileID: 0}
@@ -4599,9 +4758,9 @@ GameObject:
   - component: {fileID: 1004165323}
   - component: {fileID: 1004165324}
   - component: {fileID: 1004165325}
-  - component: {fileID: 1004165326}
   - component: {fileID: 1004165327}
   - component: {fileID: 1004165328}
+  - component: {fileID: 1004165329}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4826,18 +4985,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1004165326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004165319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02753a53f714400d84398a2ef7d033db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1004165327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4879,6 +5026,7 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: 3e3be7faae0f4754c99684fe635dca7e, type: 2}
+    - {fileID: 11400000, guid: ddb6f4572efffc343bfc571a0bf45713, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -4894,6 +5042,76 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1004165329}
+          m_TargetAssemblyTypeName: Managers.CameraManager, Assembly-CSharp
+          m_MethodName: SetCameraBaseTransform
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1004165329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004165319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9afae3e89042758101307b316c3862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fovCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.05
+      value: 1
+      inSlope: -0.051468782
+      outSlope: -0.051468782
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.058931973
+    - serializedVersion: 3
+      time: 0.85
+      value: 1
+      inSlope: 0.016319627
+      outSlope: 0.016319627
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _baseFOV: 80
+  _maxFOV: 100
 --- !u!1 &1037679019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4942,6 +5160,59 @@ MonoBehaviour:
   - {fileID: 6757303805494480931, guid: 98f96e4caf77bc84ca9f7b18ff6b700d, type: 3}
   - {fileID: 5112611328986113496, guid: fd6722855a9158041b1a3eeb9679a6db, type: 3}
   _pickUpChance: 0.3
+--- !u!1 &1064802803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 876387040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1064802807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064802803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8985bd12811d46e78776de63fe313ee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _closeDistance: -5
+  _farDistance: -15
+  _dangerDistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.18846965
+      value: 0.9536831
+      inSlope: 0.2119121
+      outSlope: 0.2119121
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.63111454
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1089885857
 GameObject:
   m_ObjectHideFlags: 0
@@ -6993,6 +7264,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &1453865353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 925361747}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1453865356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453865353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 8c0e8d01a4e3e3b48b14e9c851ec3ef1, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1453865358}
+          m_TargetAssemblyTypeName: Obstacles.PoliceCarProp, Assembly-CSharp
+          m_MethodName: GetCloser
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1453865358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453865353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc00fa5088c1493fb59d611eda823e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _basePosition: -30
+  _finalPosition: -15
+  _positionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1463989263
 GameObject:
   m_ObjectHideFlags: 0
@@ -8325,6 +8670,171 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575391349}
   m_CullTransparentMesh: 1
+--- !u!1 &1594474808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1594474810}
+  - component: {fileID: 1594474809}
+  m_Layer: 0
+  m_Name: Police Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1594474809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594474808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2774b033aec4005a6b2e352b8cfd4ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dangerTime: 10
+  _dangerCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.05
+      value: 1
+      inSlope: -0.040588077
+      outSlope: -0.040588077
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07263513
+    - serializedVersion: 3
+      time: 0.85
+      value: 1
+      inSlope: 0.04067027
+      outSlope: 0.04067027
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07248834
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1594474810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594474808}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 233330770}
+  - {fileID: 925361748}
+  - {fileID: 1597226642}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1597226641
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1594474810}
+    m_Modifications:
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+        type: 3}
+      propertyPath: m_Name
+      value: PoliceCar (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 752ee95911347ff4daaa0592670f2533, type: 3}
+--- !u!4 &1597226642 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 962954706421440179, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 1597226641}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1667611565
 GameObject:
   m_ObjectHideFlags: 0
@@ -9766,6 +10276,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006340933}
   m_CullTransparentMesh: 1
+--- !u!1 &2006387762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 962954706421440188, guid: 752ee95911347ff4daaa0592670f2533,
+    type: 3}
+  m_PrefabInstance: {fileID: 1597226641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2006387765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006387762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 8c0e8d01a4e3e3b48b14e9c851ec3ef1, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2006387766}
+          m_TargetAssemblyTypeName: Obstacles.PoliceCarProp, Assembly-CSharp
+          m_MethodName: GetCloser
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &2006387766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006387762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc00fa5088c1493fb59d611eda823e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _basePosition: -30
+  _finalPosition: -15
+  _positionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2028197298
 GameObject:
   m_ObjectHideFlags: 0
@@ -9918,9 +10502,24 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3912287435162175173, guid: 21a25866dc973974a9c3274397f64dfb,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4221301266202551521, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7562479839322367366, guid: 21a25866dc973974a9c3274397f64dfb,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671277800310872316, guid: 21a25866dc973974a9c3274397f64dfb,
+        type: 3}
+      propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7796735149550057732, guid: 21a25866dc973974a9c3274397f64dfb,
