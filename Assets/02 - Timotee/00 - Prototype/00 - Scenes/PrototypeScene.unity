@@ -2155,6 +2155,12 @@ MonoBehaviour:
   AudioMixer: {fileID: 24100000, guid: ad5af26c91ba9ba469e639a6e61ffeca, type: 2}
   TimelineDirector: {fileID: 947959013}
   StartGameTimeline: {fileID: 11400000, guid: f7d13983d8f439f48907942046f37f74, type: 2}
+  MasterVolumePlayerPrefName: Volume_Master
+  BGMVolumePlayerPrefName: Volume_BGM
+  SFXVolumePlayerPrefName: Volume_SFX
+  MasterVolumeSlider: {fileID: 1158567325}
+  BGMVolumeSlider: {fileID: 708507788}
+  SFXVolumeSlider: {fileID: 402443739}
   GameOverMenu: {fileID: 1842502416}
 --- !u!1 &477012734
 GameObject:
