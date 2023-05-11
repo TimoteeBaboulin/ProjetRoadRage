@@ -34,16 +34,19 @@ namespace Managers{
 		}
 
 		private void OnEnable(){
-			GameManager.OnRestart += ResetCameraPosition;
+			GameManager.OnRestart += Reset;
 		}
 
 		private void OnDisable(){
-			GameManager.OnRestart -= ResetCameraPosition;
+			GameManager.OnRestart -= Reset;
 		}
 
-		public void ResetCameraPosition(){
+		public void Reset(){
 			_transform.position = _menuPosition;
 			_transform.rotation = _menuRotation;
+			_fovCountdown = 0;
+			StopAllCoroutines();
+			_camera.fieldOfView = _baseFOV;
 		}
 		
 		public void SetCameraBaseTransform(){

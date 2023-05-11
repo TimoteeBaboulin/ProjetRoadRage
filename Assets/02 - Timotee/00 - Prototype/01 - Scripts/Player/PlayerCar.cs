@@ -237,6 +237,7 @@ namespace Player{
 			_tweener.Kill();
 			CameraManager.ShakeCamera(1);
 			MusicManager.FadeOut();
+			TimelineManager.Arrest();
 		}
 
 		private void Restart(){

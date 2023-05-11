@@ -13,7 +13,7 @@ namespace Obstacles{
 		private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
 		
 		public void GetCloser(){
-			_tweener = transform.DOMoveZ(_finalPosition, .5f).SetEase(_positionCurve);
+			_tweener = transform.DOMoveZ(_finalPosition, 1.5f).SetEase(_positionCurve);
 		}
 
 		private void OnEnable(){

@@ -8,6 +8,8 @@ namespace Obstacles{
 		[SerializeField] private float _minExplosionStrength;
 		[SerializeField] private float _maxExplosionStrength;
 
+		[SerializeField] private GameObject _modelParent;
+
 		private Vector3 _baseLocalPosition;
 
 		private Rigidbody _rigidbody;
@@ -24,6 +26,8 @@ namespace Obstacles{
 			var position = transform.position;
 			position.z -= _speed * Time.deltaTime;
 			transform.position = position;
+			if (position.z < CameraManager.Instance.transform.position.z)
+				_modelParent.SetActive(false);
 		}
 
 		private void OnEnable(){
@@ -32,6 +36,7 @@ namespace Obstacles{
 			_speed = TerrainManager.Instance.Speed * _bonusSpeed;
 			_rigidbody.isKinematic = true;
 			gameObject.tag = "Obstacle";
+			_modelParent.SetActive(true);
 		}
 
 		public void Thrash(Vector3 explosionOrigin){

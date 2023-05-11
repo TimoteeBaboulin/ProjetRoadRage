@@ -1,4 +1,5 @@
-﻿using Obstacles;
+﻿using Managers;
+using Obstacles;
 using UnityEngine;
 
 namespace PowerUps{
@@ -9,6 +10,7 @@ namespace PowerUps{
 			var car = other.GetComponent<ObstacleCar>();
 
 			car.Thrash(transform.position);
+			CameraManager.ShakeCamera(0.1f);
 		}
 	}
 }
