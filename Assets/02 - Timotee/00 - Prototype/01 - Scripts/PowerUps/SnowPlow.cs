@@ -9,6 +9,8 @@ namespace PowerUps{
 			
 			var car = other.GetComponent<ObstacleCar>();
 
+			car ??= other.GetComponentInParent<ObstacleCar>();
+
 			car.Thrash(transform.position);
 			CameraManager.ShakeCamera(0.1f);
 		}

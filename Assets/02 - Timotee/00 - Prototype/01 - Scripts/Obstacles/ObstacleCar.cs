@@ -1,8 +1,13 @@
-﻿using Managers;
+﻿using System;
+using Managers;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Obstacles{
 	public class ObstacleCar : MonoBehaviour{
+		public static event Action OnThrash;
+		
 		[SerializeField] private float _bonusSpeed;
 
 		[SerializeField] private float _minExplosionStrength;
@@ -10,34 +15,12 @@ namespace Obstacles{
 
 		[SerializeField] private GameObject _modelParent;
 
+		[SerializeField] private bool _haveFixedModel;
+
 		private Vector3 _baseLocalPosition;
 
 		private Rigidbody _rigidbody;
 		private float _speed;
-
-		private void Awake(){
-			_baseLocalPosition = transform.localPosition;
-			_rigidbody = GetComponent<Rigidbody>();
-		}
-
-		private void Update(){
-			if (GameManager.Paused || transform.position.z > 100) return;
-
-			var position = transform.position;
-			position.z -= _speed * Time.deltaTime;
-			transform.position = position;
-			if (position.z < CameraManager.Instance.transform.position.z)
-				_modelParent.SetActive(false);
-		}
-
-		private void OnEnable(){
-			transform.localPosition = _baseLocalPosition;
-			transform.rotation = Quaternion.identity;
-			_speed = TerrainManager.Instance.Speed * _bonusSpeed;
-			_rigidbody.isKinematic = true;
-			gameObject.tag = "Obstacle";
-			_modelParent.SetActive(true);
-		}
 
 		public void Thrash(Vector3 explosionOrigin){
 			gameObject.tag = "Untagged";
@@ -55,6 +38,48 @@ namespace Obstacles{
 			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength);
 			_rigidbody.isKinematic = false;
 			_rigidbody.AddForce(x, y, z);
+			
+			OnThrash?.Invoke();
+		}
+		
+		private void Awake(){
+			_baseLocalPosition = transform.localPosition;
+			_rigidbody = GetComponent<Rigidbody>();
+		}
+
+		private void Update(){
+			if (!_modelParent.activeSelf || GameManager.Paused || transform.position.z > 100) return;
+
+			var position = transform.position;
+			position.z -= _speed * Time.deltaTime;
+			transform.position = position;
+			if (position.z < CameraManager.Instance.transform.position.z)
+				_modelParent.SetActive(false);
+		}
+
+		private void OnEnable(){
+			transform.localPosition = _baseLocalPosition;
+			transform.rotation = Quaternion.identity;
+			_speed = TerrainManager.Instance.Speed * _bonusSpeed;
+			_rigidbody.isKinematic = true;
+			gameObject.tag = "Obstacle";
+			if (!_haveFixedModel) GenerateCar();
+			_modelParent.SetActive(true);
+		}
+
+		private void GenerateCar(){
+			GameObject[] parts = StaticCarArray.GenerateParts();
+
+			foreach(Transform child in _modelParent.transform){
+				child.gameObject.SetActive(false);
+				child.transform.SetParent(null);
+			}
+
+
+			foreach(var part in parts){
+				part.transform.parent = _modelParent.transform;
+				part.transform.localPosition = Vector3.zero;
+			}
 		}
 	}
 }

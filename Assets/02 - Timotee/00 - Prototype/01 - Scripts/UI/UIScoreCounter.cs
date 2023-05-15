@@ -13,8 +13,13 @@ namespace UI{
 		private void OnEnable(){
 			_score = 0;
 			WriteScore();
+			
 		}
 
+		private void CarThrashed(){
+			
+		}
+		
 		private void Update(){
 			if (GameManager.Paused) return;
 
