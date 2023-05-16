@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 namespace UI{
 	public class UIPowerUpSlot : MonoBehaviour{
+		[SerializeField] private Image _powerUpIcon;
+		[SerializeField] private Image _maskFill;
+
+		[SerializeField] private float _countdownTimer;
+		private PowerUp _powerUp;
+
 		public PowerUp PowerUp{
 			get => _powerUp;
 			set{
@@ -14,19 +20,17 @@ namespace UI{
 				_powerUp = value;
 			}
 		}
-		private PowerUp _powerUp;
 
-		[SerializeField] private Image _powerUpIcon;
-		[SerializeField] private Image _maskFill;
+		private void OnEnable(){
+			StartCoroutine(BarCoroutine());
+		}
 
-		[SerializeField] private float _countdownTimer;
+		private void OnDisable(){
+			StopAllCoroutines();
+		}
 
 		public void Refresh(){
 			_countdownTimer = PowerUp.Time;
-		}
-		
-		private void OnEnable(){
-			StartCoroutine(BarCoroutine());
 		}
 
 		private IEnumerator BarCoroutine(){
@@ -36,13 +40,9 @@ namespace UI{
 					_countdownTimer -= Time.deltaTime;
 				_maskFill.fillAmount = _countdownTimer / _powerUp.Time;
 			}
-			
+
 			gameObject.SetActive(false);
 			UIPowerUpSlotManager.Instance.SlotDeactivate(this);
-		}
-
-		private void OnDisable(){
-			StopAllCoroutines();
 		}
 	}
 }
