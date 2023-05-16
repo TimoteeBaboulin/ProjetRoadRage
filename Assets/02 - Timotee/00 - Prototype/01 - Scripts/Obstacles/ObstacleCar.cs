@@ -71,7 +71,7 @@ namespace Obstacles{
 
 			foreach(Transform child in _modelParent.transform){
 				child.gameObject.SetActive(false);
-				child.transform.SetParent(null);
+				child.transform.SetParent(StaticCarArray.GameObject.transform);
 			}
 
 

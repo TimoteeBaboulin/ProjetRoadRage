@@ -39,6 +39,7 @@ namespace Managers{
 		}
 
 		public static void RestartGame(){
+			Instance._gameRunning = false;
 			OnRestart?.Invoke();
 			StopPause();
 		}

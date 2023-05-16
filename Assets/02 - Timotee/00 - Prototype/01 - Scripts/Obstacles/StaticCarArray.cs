@@ -1,9 +1,12 @@
-﻿using Managers;
+﻿using System;
+using Managers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Obstacles{
 	public class StaticCarArray : MonoBehaviour{
 		public static StaticCarArray Instance;
+		public static GameObject GameObject => Instance.gameObject;
 
 		[SerializeField] private GameObject[] _frontPrefabs;
 		[SerializeField] private GameObject[] _backPrefabs;

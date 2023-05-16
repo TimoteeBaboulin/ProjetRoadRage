@@ -185,6 +185,7 @@ namespace Player{
 				input.OnActivate?.Invoke();
 
 			OnLineChange?.Invoke(_currentPath);
+			Debug.Log("Move Done");
 		}
 
 		//Hitboxes
