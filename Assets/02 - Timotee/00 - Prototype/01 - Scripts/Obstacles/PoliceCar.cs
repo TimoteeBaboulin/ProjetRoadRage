@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using DG.Tweening;
 using Managers;
 using Player;
@@ -7,18 +6,17 @@ using UnityEngine;
 
 namespace Obstacles{
 	public class PoliceCar : MonoBehaviour{
-		private PlayerCar _player;
-		private float _countdown;
-		
 		[SerializeField] private float _closeDistance;
 		[SerializeField] private float _farDistance;
 
 		[SerializeField] private AnimationCurve _dangerDistanceCurve;
+		private float _countdown;
+		private PlayerCar _player;
 
 		private void Start(){
 			_player = PlayerCar.Player;
-			
-			Vector3 position = transform.position;
+
+			var position = transform.position;
 			position.z = _farDistance;
 			transform.position = position;
 		}
@@ -33,7 +31,7 @@ namespace Obstacles{
 		private void OnDisable(){
 			PlayerCar.OnLineChange -= ChangeLane;
 			PlayerCar.OnSideContact -= SideContact;
-			
+
 			GameManager.OnRestart -= ResetLane;
 		}
 
@@ -45,7 +43,7 @@ namespace Obstacles{
 		private void SideContact(bool arrested){
 			if (!arrested) GetCloser();
 		}
-		
+
 		private void GetCloser(){
 			if (_countdown > 0)
 				_countdown = PoliceManager.DangerTime;
@@ -54,17 +52,18 @@ namespace Obstacles{
 		}
 
 		private IEnumerator GetCloserCoroutine(){
-			float time = PoliceManager.DangerTime;
+			var time = PoliceManager.DangerTime;
 			_countdown = time;
 			Vector3 position;
-			
+
 			while(_countdown > 0){
 				yield return null;
-				if (GameManager.Paused || ! GameManager.GameRunning) continue;
+				if (GameManager.Paused || !GameManager.GameRunning) continue;
 				_countdown -= Time.deltaTime;
 
 				position = transform.position;
-				position.z = Mathf.Lerp(_farDistance, _closeDistance, PoliceManager.DangerCurve.Evaluate(1 - (_countdown / time)));
+				position.z = Mathf.Lerp(_farDistance, _closeDistance,
+					PoliceManager.DangerCurve.Evaluate(1 - _countdown / time));
 				transform.position = position;
 			}
 
@@ -73,15 +72,16 @@ namespace Obstacles{
 			position.z = _farDistance;
 			transform.position = position;
 		}
-		
+
 		private void ChangeLane(int lane){
-			float time = Mathf.Abs(_player.transform.position.z - transform.position.z) / TerrainManager.Instance.Speed;
+			var time = Mathf.Abs(_player.transform.position.z - transform.position.z) / TerrainManager.Instance.Speed;
 			time -= PlayerCar.LaneChangeTime;
-			
+
 			StartCoroutine(ChangeLaneCoroutine(time, lane));
 		}
+
 		private IEnumerator ChangeLaneCoroutine(float time, int lane){
-			float countdown = time;
+			var countdown = time;
 
 			while(countdown > 0){
 				yield return null;
@@ -90,7 +90,7 @@ namespace Obstacles{
 				countdown -= Time.deltaTime;
 			}
 
-			transform.DOMoveX(-3 + (lane * 3), PlayerCar.LaneChangeTime);
+			transform.DOMoveX(-3 + lane * 3, PlayerCar.LaneChangeTime);
 		}
 	}
 }

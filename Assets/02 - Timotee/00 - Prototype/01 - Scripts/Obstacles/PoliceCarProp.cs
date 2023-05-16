@@ -9,11 +9,14 @@ namespace Obstacles{
 		[SerializeField] private float _basePosition;
 		[SerializeField] private float _finalPosition;
 		[SerializeField] private AnimationCurve _positionCurve;
-		
+
 		private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
-		
-		public void GetCloser(){
-			_tweener = transform.DOMoveZ(_finalPosition, 1.5f).SetEase(_positionCurve);
+
+		private void Reset(){
+			_tweener.Kill();
+			var position = transform.position;
+			position.z = _basePosition;
+			transform.position = position;
 		}
 
 		private void OnEnable(){
@@ -24,11 +27,8 @@ namespace Obstacles{
 			GameManager.OnRestart -= Reset;
 		}
 
-		private void Reset(){
-			_tweener.Kill();
-			Vector3 position = transform.position;
-			position.z = _basePosition;
-			transform.position = position;
+		public void GetCloser(){
+			_tweener = transform.DOMoveZ(_finalPosition, 1.5f).SetEase(_positionCurve);
 		}
 	}
 }

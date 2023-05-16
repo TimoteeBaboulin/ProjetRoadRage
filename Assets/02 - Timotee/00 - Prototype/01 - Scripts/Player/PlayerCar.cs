@@ -17,64 +17,56 @@ namespace Player{
 	public class PlayerCar : MonoBehaviour{
 		private static CustomInput _rightTurnInput;
 		private static CustomInput _leftTurnInput;
-
-		public static float LaneChangeTime => 0.2f / (1 + TerrainManager.SpeedIncrease);
 		public static PlayerCar Player;
 
-	#region events
-		public static event Action<PowerUp> OnPowerUp;
-		public static event Action<int> OnLineChange;
-		public static event Action<bool> OnSideContact;
-	#endregion
-		
 
 		[SerializeField] private Transform _front;
 
 		[SerializeField] private ParticleSystem _smoke;
 
-	#region Suspensions
-		private Animator _animator;
-		private float _suspensionCountdown;
-	#endregion
-
-	#region Camera
-		private Camera _camera;
-		private Vector3 _cameraBasePosition;
-	#endregion
-
-	#region Movement
-		private int _currentPath;
-		private InputBuffer _inputBuffer;
-		private int _previousPath;
-	#endregion
-		
-		private float _snowplowCountdown;
+		private float _dangerCountdown;
 		private bool _paused;
 
-		private float _dangerCountdown;
-		
 		private GameObject _snowplow;
 
+		private float _snowplowCountdown;
+
 		private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
+
+		public static float LaneChangeTime => 0.2f / (1 + TerrainManager.SpeedIncrease);
 		private bool CanMove => _tweener==null || !_tweener.IsActive() || _tweener.IsComplete();
+		
+		#region events
+			public static event Action<PowerUp> OnPowerUp;
+			public static event Action<int> OnLineChange;
+			public static event Action<bool> OnSideContact;
+		#endregion
+
+		#region Suspensions
+			private Animator _animator;
+			private float _suspensionCountdown;
+		#endregion
+
+		#region Movement
+			private int _currentPath;
+			private InputBuffer _inputBuffer;
+			private int _previousPath;
+		#endregion
 
 		private void Awake(){
 			_inputBuffer = GetComponent<InputBuffer>();
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
-			_animator = GetComponent<Animator>();
-			if (Player != null) return;
+			if (Player!=null) return;
 			Player = this;
 		}
 
 		//Initialise fields
 		private void Start(){
-			_camera = CameraManager.Camera;
 			_currentPath = 1;
 			_previousPath = 1;
-			_cameraBasePosition = _camera.transform.position;
 			_rightTurnInput = new CustomInput(TurnRight);
 			_leftTurnInput = new CustomInput(TurnLeft);
-			
+			_animator = GetComponentInChildren<Animator>();
 		}
 
 		//Editor only
@@ -109,8 +101,8 @@ namespace Player{
 				_suspensionCountdown = time;
 				return;
 			}
-			
-			_animator.Play("GogoGadgetSuspension");
+
+			_animator.Play("SuspensionsOn", 0);
 			_suspensionCountdown = time;
 			StartCoroutine(SuspensionCoroutine());
 		}
@@ -121,13 +113,14 @@ namespace Player{
 				if (GameManager.Paused) continue;
 				_suspensionCountdown -= Time.deltaTime;
 			}
-			_animator.Play("SuspensionRemake");
+
+			_animator.Play("SuspensionsOff", 0);
 		}
-		
+
 		public void UsePowerUp(PowerUp powerUp){
 			OnPowerUp?.Invoke(powerUp);
 		}
-		
+
 		public void SpawnSnowPlow(GameObject spawn, float time = 15){
 			if (_snowplowCountdown > 0){
 				_snowplowCountdown = time;
@@ -145,6 +138,7 @@ namespace Player{
 				if (GameManager.Paused) continue;
 				_snowplowCountdown -= Time.deltaTime;
 			}
+
 			Destroy(_snowplow);
 		}
 
@@ -165,7 +159,9 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath++;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
+			var laneChangeTime = LaneChangeTime;
+			_animator.PlayInFixedTime("Turn Right", 1, laneChangeTime);
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
@@ -178,15 +174,18 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath--;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
+			var laneChangeTime = LaneChangeTime;
+			_animator.PlayInFixedTime("Turn Left", 1, laneChangeTime);
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
 		private void OnCanMove(){
 			if (_inputBuffer.TryGetInput(out var input))
 				input.OnActivate?.Invoke();
-			
+
 			OnLineChange?.Invoke(_currentPath);
+			Debug.Log("Move Done");
 		}
 
 		//Hitboxes
@@ -207,7 +206,7 @@ namespace Player{
 				_currentPath = _previousPath;
 				_tweener.Kill();
 				_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
-				
+
 				CameraManager.ShakeCamera(0.1f);
 				CameraManager.DangerCamera();
 
@@ -215,40 +214,50 @@ namespace Player{
 				OnSideContact?.Invoke(false);
 				return;
 			}
-			
+
 			Arrested();
 			OnSideContact?.Invoke(true);
 		}
-		
+
 		//Game Events
 		private void Die(){
-			GameManager.LoseGame();
-			
-			_tweener.Kill();
-			CameraManager.ShakeCamera(1);
-			MusicManager.FadeOut();
+			Lost();
 			GetComponent<AudioSource>().Play();
 			_smoke.Play();
 		}
-		
-		private void Arrested(){
+
+		private void Lost(){
 			GameManager.LoseGame();
-			
+
 			_tweener.Kill();
 			CameraManager.ShakeCamera(1);
 			MusicManager.FadeOut();
+			_animator.speed = 0;
+		}
+
+		private void Arrested(){
+			Lost();
 			TimelineManager.Arrest();
 		}
 
 		private void Restart(){
+			//Clear smoke effect
 			_smoke.Stop();
 			_smoke.Clear();
+			
+			//Reset Position
 			_currentPath = 1;
 			transform.position = new Vector3(0, 1, 0);
-			// _camera.GetComponent<Animator>().Play("SoundStart");
+			
+			//Restart the music
 			MusicManager.FadeIn();
+			
+			//Remove the Snow Plow if it exists
 			Destroy(_snowplow);
-			_animator.PlayInFixedTime("SuspensionRemake", 0, 0.01f);
+			
+			//Resets Animations
+			_animator.PlayInFixedTime("SuspensionsOff", 0, 0.01f);
+			_animator.speed = 1;
 		}
 
 		private void Pause(bool paused){

@@ -1,13 +1,10 @@
 ﻿using System;
 using Managers;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Obstacles{
 	public class ObstacleCar : MonoBehaviour{
-		public static event Action OnThrash;
-		
 		[SerializeField] private float _bonusSpeed;
 
 		[SerializeField] private float _minExplosionStrength;
@@ -22,26 +19,6 @@ namespace Obstacles{
 		private Rigidbody _rigidbody;
 		private float _speed;
 
-		public void Thrash(Vector3 explosionOrigin){
-			gameObject.tag = "Untagged";
-			float side;
-			var xDifference = explosionOrigin.x - transform.position.x;
-			if (Mathf.Abs(xDifference) < 0.1f)
-				side = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
-			else
-				side = xDifference > 0 ? -1 : 1;
-
-			float x, y, z, terrainSpeed;
-			terrainSpeed = 1 + TerrainManager.SpeedIncrease;
-			x = Random.Range(_minExplosionStrength, _maxExplosionStrength) * terrainSpeed * side;
-			y = Random.Range(_minExplosionStrength, _maxExplosionStrength) / 2 * terrainSpeed;
-			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength);
-			_rigidbody.isKinematic = false;
-			_rigidbody.AddForce(x, y, z);
-			
-			OnThrash?.Invoke();
-		}
-		
 		private void Awake(){
 			_baseLocalPosition = transform.localPosition;
 			_rigidbody = GetComponent<Rigidbody>();
@@ -67,12 +44,34 @@ namespace Obstacles{
 			_modelParent.SetActive(true);
 		}
 
+		public static event Action OnThrash;
+
+		public void Thrash(Vector3 explosionOrigin){
+			gameObject.tag = "Untagged";
+			float side;
+			var xDifference = explosionOrigin.x - transform.position.x;
+			if (Mathf.Abs(xDifference) < 0.1f)
+				side = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
+			else
+				side = xDifference > 0 ? -1 : 1;
+
+			float x, y, z, terrainSpeed;
+			terrainSpeed = 1 + TerrainManager.SpeedIncrease;
+			x = Random.Range(_minExplosionStrength, _maxExplosionStrength) * terrainSpeed * side;
+			y = Random.Range(_minExplosionStrength, _maxExplosionStrength) / 2 * terrainSpeed;
+			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength);
+			_rigidbody.isKinematic = false;
+			_rigidbody.AddForce(x, y, z);
+
+			OnThrash?.Invoke();
+		}
+
 		private void GenerateCar(){
-			GameObject[] parts = StaticCarArray.GenerateParts();
+			var parts = StaticCarArray.GenerateParts();
 
 			foreach(Transform child in _modelParent.transform){
 				child.gameObject.SetActive(false);
-				child.transform.SetParent(null);
+				child.transform.SetParent(StaticCarArray.GameObject.transform);
 			}
 
 
