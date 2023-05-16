@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1127762322832222606}
   - component: {fileID: 8175464891756072332}
   m_Layer: 0
-  m_Name: JackyCar
+  m_Name: Modele - JackyCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

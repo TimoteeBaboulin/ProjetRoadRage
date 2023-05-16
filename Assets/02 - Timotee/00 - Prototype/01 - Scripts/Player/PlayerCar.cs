@@ -61,7 +61,6 @@ namespace Player{
 		private void Awake(){
 			_inputBuffer = GetComponent<InputBuffer>();
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
-			_animator = GetComponent<Animator>();
 			if (Player != null) return;
 			Player = this;
 		}
@@ -74,7 +73,7 @@ namespace Player{
 			_cameraBasePosition = _camera.transform.position;
 			_rightTurnInput = new CustomInput(TurnRight);
 			_leftTurnInput = new CustomInput(TurnLeft);
-			
+			_animator = GetComponentInChildren<Animator>();
 		}
 
 		//Editor only
@@ -110,7 +109,7 @@ namespace Player{
 				return;
 			}
 			
-			_animator.Play("GogoGadgetSuspension");
+			_animator.Play("SuspensionsOn", 0);
 			_suspensionCountdown = time;
 			StartCoroutine(SuspensionCoroutine());
 		}
@@ -121,7 +120,7 @@ namespace Player{
 				if (GameManager.Paused) continue;
 				_suspensionCountdown -= Time.deltaTime;
 			}
-			_animator.Play("SuspensionRemake");
+			_animator.Play("SuspensionsOff", 0);
 		}
 		
 		public void UsePowerUp(PowerUp powerUp){
@@ -165,7 +164,9 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath++;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
+			var laneChangeTime = LaneChangeTime;
+			_animator.PlayInFixedTime("Turn Right",1,laneChangeTime);
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
@@ -178,7 +179,9 @@ namespace Player{
 
 			_previousPath = _currentPath;
 			_currentPath--;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, LaneChangeTime)
+			var laneChangeTime = LaneChangeTime;
+			_animator.PlayInFixedTime("Turn Left",1,laneChangeTime);
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
 				.OnComplete(OnCanMove);
 		}
 
