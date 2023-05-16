@@ -5,32 +5,40 @@ using UnityEngine;
 namespace Managers{
 	public class CameraManager : MonoBehaviour{
 		public static CameraManager Instance;
-		public static Camera Camera => Instance._camera;
-		
-		private Camera _camera;
+
+		[SerializeField] private AnimationCurve _fovCurve;
+		[SerializeField] private float _baseFOV;
+		[SerializeField] private float _maxFOV;
+		private Animator _animator;
 
 		private Vector3 _basePosition;
 		private Quaternion _baseRotation;
+
+		private Camera _camera;
+		private float _fovCountdown;
 
 		private Vector3 _menuPosition;
 		private Quaternion _menuRotation;
 
 		private Transform _transform;
-		private Animator _animator;
+		public static Camera Camera => Instance._camera;
 
-		[SerializeField] private AnimationCurve _fovCurve;
-		[SerializeField] private float _baseFOV;
-		[SerializeField] private float _maxFOV;
-		private float _fovCountdown;
-		
 		private void Awake(){
-			if (Instance != null) return;
+			if (Instance!=null) return;
 			Instance = this;
 			_fovCountdown = 0;
 			_camera = GetComponent<Camera>();
 			_transform = transform;
 			_menuPosition = _transform.position;
 			_menuRotation = _transform.rotation;
+		}
+
+		public void Reset(){
+			_transform.position = _menuPosition;
+			_transform.rotation = _menuRotation;
+			_fovCountdown = 0;
+			StopAllCoroutines();
+			_camera.fieldOfView = _baseFOV;
 		}
 
 		private void OnEnable(){
@@ -41,14 +49,6 @@ namespace Managers{
 			GameManager.OnRestart -= Reset;
 		}
 
-		public void Reset(){
-			_transform.position = _menuPosition;
-			_transform.rotation = _menuRotation;
-			_fovCountdown = 0;
-			StopAllCoroutines();
-			_camera.fieldOfView = _baseFOV;
-		}
-		
 		public void SetCameraBaseTransform(){
 			_basePosition = _transform.position;
 			_baseRotation = _transform.rotation;
@@ -65,7 +65,7 @@ namespace Managers{
 		public static void DangerCamera(){
 			Instance.StartDangerCamera();
 		}
-		
+
 		private void StartDangerCamera(){
 			if (_fovCountdown > 0.2f)
 				_fovCountdown = PoliceManager.DangerTime;
@@ -74,20 +74,18 @@ namespace Managers{
 		}
 
 		private IEnumerator DangerFOVCoroutine(){
-			float time = PoliceManager.DangerTime;
+			var time = PoliceManager.DangerTime;
 			_fovCountdown = time;
 
 			while(_fovCountdown > 0){
 				yield return null;
-				if (GameManager.Paused || ! GameManager.GameRunning) continue;
+				if (GameManager.Paused || !GameManager.GameRunning) continue;
 				_fovCountdown -= Time.deltaTime;
-				
-				_camera.fieldOfView = Mathf.Lerp(_baseFOV, _maxFOV, _fovCurve.Evaluate(1 - (_fovCountdown / time)));
+
+				_camera.fieldOfView = Mathf.Lerp(_baseFOV, _maxFOV, _fovCurve.Evaluate(1 - _fovCountdown / time));
 			}
 		}
 
-		private void ZoomOut(){
-			
-		}
+		private void ZoomOut(){ }
 	}
 }

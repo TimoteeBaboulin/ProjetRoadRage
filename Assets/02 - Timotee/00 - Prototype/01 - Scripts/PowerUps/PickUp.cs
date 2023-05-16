@@ -1,7 +1,6 @@
 ﻿using System;
 using Player;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace PowerUps{
 	[Serializable]
@@ -9,8 +8,6 @@ namespace PowerUps{
 		[SerializeField] protected string _name;
 		[SerializeField] protected PowerUp _powerUp;
 
-		public virtual void Activate(PlayerCar player){
-			
-		}
+		public virtual void Activate(PlayerCar player){ }
 	}
 }

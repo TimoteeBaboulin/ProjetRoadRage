@@ -1,6 +1,4 @@
-﻿using System;
-using Managers;
-using Unity.Mathematics;
+﻿using Managers;
 using UnityEngine;
 
 namespace UI{
@@ -12,6 +10,13 @@ namespace UI{
 
 		private float _speed;
 
+		private void Update(){
+			if (!GameManager.GameRunning || _speed >= 1) return;
+			_speed = TerrainManager.SpeedIncrease;
+			var rotation = new Vector3(0, 0, Mathf.Lerp(_minimumSpeed, _maximumSpeed, _speed));
+			_anchor.transform.rotation = Quaternion.Euler(rotation);
+		}
+
 		private void OnEnable(){
 			GameManager.OnGameLost += GameLost;
 		}
@@ -20,16 +25,9 @@ namespace UI{
 			GameManager.OnGameLost -= GameLost;
 		}
 
-		private void Update(){
-			if (!GameManager.GameRunning || _speed >= 1) return;
-			_speed = TerrainManager.SpeedIncrease;
-			Vector3 rotation = new Vector3(0, 0, Mathf.Lerp(_minimumSpeed, _maximumSpeed, _speed));
-			_anchor.transform.rotation = Quaternion.Euler(rotation);
-		}
-
 		private void GameLost(){
 			_speed = 0;
-			_anchor.transform.rotation = Quaternion.Euler(0,0,_zeroSpeedRotation);
+			_anchor.transform.rotation = Quaternion.Euler(0, 0, _zeroSpeedRotation);
 		}
 	}
 }
