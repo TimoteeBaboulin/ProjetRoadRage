@@ -2,14 +2,10 @@
 
 namespace Player{
 	public class HitboxStabilizer : MonoBehaviour{
-		private Quaternion _rotation;
-
-		private void Awake(){
-			_rotation = transform.rotation;
-		}
+		[SerializeField] private Transform _base;
 
 		private void Update(){
-			transform.rotation = _rotation;
+			transform.position = _base.position;
 		}
 	}
 }

@@ -4309,7 +4309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aff6fd41444f45a237d1074cdb0930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _laneWidth: 3.5
+  _laneWidth: 4
 --- !u!114 &944353624
 MonoBehaviour:
   m_ObjectHideFlags: 0
