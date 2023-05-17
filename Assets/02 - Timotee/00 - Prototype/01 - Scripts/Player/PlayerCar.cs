@@ -24,6 +24,8 @@ namespace Player{
 
 		[SerializeField] private ParticleSystem _smoke;
 
+		[SerializeField] private AnimationCurve _laneChangeCurve;
+
 		private float _dangerCountdown;
 		private bool _paused;
 
@@ -160,8 +162,9 @@ namespace Player{
 			_previousPath = _currentPath;
 			_currentPath++;
 			var laneChangeTime = LaneChangeTime;
-			_animator.PlayInFixedTime("Turn Right", 1, laneChangeTime);
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
+			_animator.speed = 1 / laneChangeTime;
+			_animator.Play("Turn Right", 1);
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime).SetEase(_laneChangeCurve)
 				.OnComplete(OnCanMove);
 		}
 
@@ -175,8 +178,9 @@ namespace Player{
 			_previousPath = _currentPath;
 			_currentPath--;
 			var laneChangeTime = LaneChangeTime;
-			_animator.PlayInFixedTime("Turn Left", 1, laneChangeTime);
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime)
+			_animator.Play("Turn Left", 1);
+			_animator.speed = 1 / laneChangeTime;
+			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime).SetEase(_laneChangeCurve)
 				.OnComplete(OnCanMove);
 		}
 
@@ -185,7 +189,7 @@ namespace Player{
 				input.OnActivate?.Invoke();
 
 			OnLineChange?.Invoke(_currentPath);
-			Debug.Log("Move Done");
+			_animator.speed = 1;
 		}
 
 		//Hitboxes
