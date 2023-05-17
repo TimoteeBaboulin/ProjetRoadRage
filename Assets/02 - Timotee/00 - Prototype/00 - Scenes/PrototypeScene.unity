@@ -2258,24 +2258,6 @@ MonoBehaviour:
   _powerUpIcon: {fileID: 261244025}
   _maskFill: {fileID: 1410462001}
   _countdownTimer: 0
---- !u!1 &510564842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 679838968938452838, guid: 21a25866dc973974a9c3274397f64dfb,
-    type: 3}
-  m_PrefabInstance: {fileID: 7796735148661488275}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &510564844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510564842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4aacbbdb9964b2b9755840c7b86dfd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519702098
 GameObject:
   m_ObjectHideFlags: 0
