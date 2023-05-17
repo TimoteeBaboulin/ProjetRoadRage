@@ -4309,6 +4309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aff6fd41444f45a237d1074cdb0930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _laneWidth: 3.5
 --- !u!114 &944353624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10689,6 +10690,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1596402730127747931, guid: 21a25866dc973974a9c3274397f64dfb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2243072291669159733, guid: 21a25866dc973974a9c3274397f64dfb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2288851115090126653, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10697,12 +10708,12 @@ PrefabInstance:
     - target: {fileID: 2288851115090126653, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 2288851115090126653, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.3
+      value: 1.83
       objectReference: {fileID: 0}
     - target: {fileID: 2296777044230415563, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
@@ -10742,7 +10753,7 @@ PrefabInstance:
     - target: {fileID: 2851331934353652754, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: _laneChangeCurve.m_Curve.Array.data[2].time
-      value: 0.741895
+      value: 0.74543506
       objectReference: {fileID: 0}
     - target: {fileID: 2851331934353652754, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
@@ -10757,7 +10768,7 @@ PrefabInstance:
     - target: {fileID: 2851331934353652754, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: _laneChangeCurve.m_Curve.Array.data[2].value
-      value: 1.1811609
+      value: 1.0327997
       objectReference: {fileID: 0}
     - target: {fileID: 2851331934353652754, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
@@ -10992,7 +11003,7 @@ PrefabInstance:
     - target: {fileID: 7796735149550057739, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7796735149550057739, guid: 21a25866dc973974a9c3274397f64dfb,
         type: 3}

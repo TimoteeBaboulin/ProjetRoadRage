@@ -35,7 +35,10 @@ namespace Obstacles{
 		}
 
 		private void OnEnable(){
-			transform.localPosition = _baseLocalPosition;
+			var position = _baseLocalPosition;
+			if (position.x > 0) position.x = GameManager.LaneWidth;
+			else if (position.x < 0) position.x = -GameManager.LaneWidth;
+			transform.localPosition = position;
 			transform.rotation = Quaternion.identity;
 			_speed = TerrainManager.Instance.Speed * _bonusSpeed;
 			_rigidbody.isKinematic = true;

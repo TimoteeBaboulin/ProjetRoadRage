@@ -32,6 +32,12 @@ namespace Player{
 		private GameObject _snowplow;
 
 		private float _snowplowCountdown;
+		private float _currentLanePosition{
+			get{
+				var laneWidth = GameManager.LaneWidth;
+				return-laneWidth + _currentPath * laneWidth;
+			}
+		}
 
 		private TweenerCore<Vector3, Vector3, VectorOptions> _tweener;
 
@@ -146,41 +152,40 @@ namespace Player{
 
 		//Controls
 		private void HandleSwipe(SwipeData data){
-			if (data.Side==SwipeSide.Left)
-				TurnLeft();
-			else
-				TurnRight();
+			Turn(data.Side == SwipeSide.Left);
+			// if (data.Side==SwipeSide.Left)
+			// 	TurnLeft();
+			// else
+			// 	TurnRight();
 		}
 
 		private void TurnRight(){
-			if (_paused || !GameManager.GameRunning || _currentPath==2) return;
-			if (!CanMove){
-				_inputBuffer.AddInput(_rightTurnInput);
-				return;
-			}
-
-			_previousPath = _currentPath;
-			_currentPath++;
-			var laneChangeTime = LaneChangeTime;
-			_animator.speed = 1 / laneChangeTime;
-			_animator.Play("Turn Right", 1);
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime).SetEase(_laneChangeCurve)
-				.OnComplete(OnCanMove);
+			Turn(false);
 		}
 
 		private void TurnLeft(){
-			if (_paused || !GameManager.GameRunning || _currentPath==0) return;
+			Turn(true);
+		}
+
+		private void Turn(bool left){
+			if (_paused || !GameManager.GameRunning || (_currentPath==0 && left) || (_currentPath==2 && !left)) return;
 			if (!CanMove){
-				_inputBuffer.AddInput(_leftTurnInput);
+				_inputBuffer.AddInput(left ? _leftTurnInput : _rightTurnInput);
 				return;
 			}
 
+			// Debug.Log("Turn");
 			_previousPath = _currentPath;
-			_currentPath--;
+			if (left) _currentPath--;
+			else _currentPath++;
+			
 			var laneChangeTime = LaneChangeTime;
-			_animator.Play("Turn Left", 1);
+			var animationName = "Turn " + (left ? "Left" : "Right");
+			_animator.Play(animationName, 1);
 			_animator.speed = 1 / laneChangeTime;
-			_tweener = transform.DOMoveX(-3 + _currentPath * 3, laneChangeTime).SetEase(_laneChangeCurve)
+
+			Debug.Log(_currentLanePosition);
+			_tweener = transform.DOMoveX(_currentLanePosition, laneChangeTime).SetEase(_laneChangeCurve)
 				.OnComplete(OnCanMove);
 		}
 
@@ -251,7 +256,7 @@ namespace Player{
 			
 			//Reset Position
 			_currentPath = 1;
-			transform.position = new Vector3(0, 1, 0);
+			transform.position = new Vector3(0, transform.position.y, 0);
 			
 			//Restart the music
 			MusicManager.FadeIn();

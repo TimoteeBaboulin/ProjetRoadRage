@@ -4,6 +4,10 @@ using UnityEngine;
 namespace Managers{
 	public class GameManager : MonoBehaviour{
 		public static GameManager Instance;
+
+		public static float LaneWidth => Instance._laneWidth;
+		[SerializeField] private float _laneWidth;
+		
 		private bool _gameRunning;
 		private bool _paused;
 
