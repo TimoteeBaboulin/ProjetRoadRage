@@ -190,7 +190,6 @@ namespace Player{
 
 			OnLineChange?.Invoke(_currentPath);
 			_animator.speed = 1;
-			Debug.Log("Move Done");
 		}
 
 		//Hitboxes
