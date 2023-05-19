@@ -13,6 +13,7 @@ namespace Player{
 		private void OnTriggerEnter(Collider other){
 			if (!other.CompareTag("Obstacle")) return;
 
+			other.tag = "Untagged";
 			OnContact?.Invoke(_hitboxType);
 		}
 

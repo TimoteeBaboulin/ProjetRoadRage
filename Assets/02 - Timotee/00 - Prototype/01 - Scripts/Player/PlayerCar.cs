@@ -25,6 +25,7 @@ namespace Player{
 		[SerializeField] private ParticleSystem _smoke;
 
 		[SerializeField] private AnimationCurve _laneChangeCurve;
+		[SerializeField] private ParticleSystem _coinParticleSystem;
 
 		private float _dangerCountdown;
 		private bool _paused;
@@ -43,8 +44,8 @@ namespace Player{
 
 		public static float LaneChangeTime => 0.2f / (1 + TerrainManager.SpeedIncrease);
 		private bool CanMove => _tweener==null || !_tweener.IsActive() || _tweener.IsComplete();
-		
-		#region events
+
+	#region events
 			public static event Action<PowerUp> OnPowerUp;
 			public static event Action<int> OnLineChange;
 			public static event Action<bool> OnSideContact;
@@ -104,6 +105,12 @@ namespace Player{
 			GameManager.OnRestart -= Restart;
 		}
 
+		public void PlayCoinParticles(){
+			// if (_coinParticleSystem.isPlaying) return;
+			// Instantiate(_coinParticleSystem, transform.position, transform.rotation).Play();
+			_coinParticleSystem.Play();
+		}
+		
 		public void GogoGadgetSuspension(float time = 10){
 			if (_suspensionCountdown > 0){
 				_suspensionCountdown = time;
@@ -153,10 +160,6 @@ namespace Player{
 		//Controls
 		private void HandleSwipe(SwipeData data){
 			Turn(data.Side == SwipeSide.Left);
-			// if (data.Side==SwipeSide.Left)
-			// 	TurnLeft();
-			// else
-			// 	TurnRight();
 		}
 
 		private void TurnRight(){
@@ -173,8 +176,9 @@ namespace Player{
 				_inputBuffer.AddInput(left ? _leftTurnInput : _rightTurnInput);
 				return;
 			}
-
-			// Debug.Log("Turn");
+			
+			_inputBuffer.Clear();
+			
 			_previousPath = _currentPath;
 			if (left) _currentPath--;
 			else _currentPath++;
@@ -184,7 +188,6 @@ namespace Player{
 			_animator.Play(animationName, 1);
 			_animator.speed = 1 / laneChangeTime;
 
-			Debug.Log(_currentLanePosition);
 			_tweener = transform.DOMoveX(_currentLanePosition, laneChangeTime).SetEase(_laneChangeCurve)
 				.OnComplete(OnCanMove);
 		}
@@ -192,9 +195,10 @@ namespace Player{
 		private void OnCanMove(){
 			if (_inputBuffer.TryGetInput(out var input))
 				input.OnActivate?.Invoke();
-
+			else
+				_animator.speed = 1;
+			
 			OnLineChange?.Invoke(_currentPath);
-			_animator.speed = 1;
 		}
 
 		//Hitboxes

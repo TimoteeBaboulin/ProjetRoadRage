@@ -249,7 +249,7 @@ namespace Managers{
 					throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
 			}
 
-			position = new Vector3(_roadworkSide * 3, 0, _roadworkTotalLength + 50);
+			position = new Vector3(_roadworkSide * GameManager.LaneWidth, 0, _roadworkTotalLength + 50);
 			scale = new Vector3(_roadworkSide, 1, 1);
 
 			var roadwork = TerrainPoolManager.Instance.CreatePrefab(roadworkPrefab);

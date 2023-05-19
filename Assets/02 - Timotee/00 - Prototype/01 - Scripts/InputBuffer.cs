@@ -26,6 +26,10 @@ public class InputBuffer : MonoBehaviour{
 		}
 	}
 
+	public void Clear(){
+		_inputs.Clear();
+	}
+	
 	public void AddInput(CustomInput input){
 		_inputs.Add(input);
 	}
