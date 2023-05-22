@@ -246,6 +246,7 @@ namespace Player{
 			CameraManager.ShakeCamera(1);
 			MusicManager.FadeOut();
 			_animator.speed = 0;
+			CameraManager.ResetFOV();
 		}
 
 		private void Arrested(){

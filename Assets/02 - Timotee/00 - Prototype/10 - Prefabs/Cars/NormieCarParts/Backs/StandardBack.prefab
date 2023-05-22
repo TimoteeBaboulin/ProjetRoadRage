@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4692214177524292636}
   - component: {fileID: 700767908970636169}
+  - component: {fileID: 5236350742930704329}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Obstacle
@@ -128,6 +129,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &5236350742930704329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2252188981065828051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c085ad480f29484084f3709ffc7c5a5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Car: {fileID: 0}
 --- !u!1 &2502461500057843534
 GameObject:
   m_ObjectHideFlags: 0

@@ -86,6 +86,13 @@ namespace Managers{
 			}
 		}
 
-		private void ZoomOut(){ }
+		public static void ResetFOV(){
+			Instance.LocalResetFOV();
+		}
+
+		private void LocalResetFOV(){
+			StopAllCoroutines();
+			_camera.fieldOfView = _baseFOV;
+		}
 	}
 }

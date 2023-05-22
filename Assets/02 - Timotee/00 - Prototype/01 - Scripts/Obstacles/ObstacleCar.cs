@@ -62,7 +62,7 @@ namespace Obstacles{
 			terrainSpeed = 1 + TerrainManager.SpeedIncrease;
 			x = Random.Range(_minExplosionStrength, _maxExplosionStrength) * side;
 			y = Random.Range(_minExplosionStrength, _maxExplosionStrength) * terrainSpeed;
-			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength);
+			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength) / 2;
 			_rigidbody.isKinematic = false;
 			_rigidbody.AddForce(x, y, z);
 			
@@ -72,11 +72,11 @@ namespace Obstacles{
 		private void GenerateCar(){
 			var parts = StaticCarArray.GenerateParts();
 
-			foreach(Transform child in _modelParent.transform){
+			while(_modelParent.transform.childCount > 0){
+				Transform child = _modelParent.transform.GetChild(0);
+				child.SetParent(StaticCarArray.GameObject.transform);
 				child.gameObject.SetActive(false);
-				child.transform.SetParent(StaticCarArray.GameObject.transform);
 			}
-
 
 			foreach(var part in parts){
 				part.transform.parent = _modelParent.transform;
