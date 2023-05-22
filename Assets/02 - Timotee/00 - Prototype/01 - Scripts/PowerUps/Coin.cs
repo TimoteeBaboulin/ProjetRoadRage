@@ -10,7 +10,8 @@ namespace PowerUps{
 		[SerializeField] private GameObject _coinModel;
 
 		public override void Activate(PlayerCar player){
-			ScoreManager.AddScore(_baseScoreValue * (1 + TerrainManager.SpeedIncrease));
+			ScoreManager.AddScore(_baseScoreValue);
+			ScoreManager.Coins++;
 			player.PlayCoinParticles();
 			_coinModel.SetActive(false);
 		}
