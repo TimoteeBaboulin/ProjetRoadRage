@@ -30,6 +30,11 @@ namespace Managers{
 			OnPause?.Invoke(Paused);
 		}
 
+		public void LocalStopPause(){
+			if (!_gameRunning) return;
+			StopPause();
+		}
+		
 		public static void StopPause(){
 			Instance._paused = false;
 			OnPause?.Invoke(Paused);

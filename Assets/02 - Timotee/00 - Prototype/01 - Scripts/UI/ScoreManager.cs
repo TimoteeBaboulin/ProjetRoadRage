@@ -11,6 +11,18 @@ namespace UI{
 		}
 		private float _score;
 
+		public static int Coins{
+			get => Instance._coins;
+			set => Instance._coins = value;
+		}
+		private int _coins;
+		
+		public static int Crashes{
+			get => Instance._crashes;
+			set => Instance._crashes = value;
+		}
+		private int _crashes;
+
 		private void Awake(){
 			if (Instance!=null) return;
 			
@@ -24,6 +36,8 @@ namespace UI{
 
 		public static void ResetScore(){
 			Score = 0;
+			Crashes = 0;
+			Coins = 0;
 		}
 		
 		private void Update(){

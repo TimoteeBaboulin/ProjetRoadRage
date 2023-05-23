@@ -66,7 +66,8 @@ namespace Obstacles{
 			_rigidbody.isKinematic = false;
 			_rigidbody.AddForce(x, y, z);
 			
-			ScoreManager.AddScore(_pointsWorth * terrainSpeed);
+			ScoreManager.AddScore(_pointsWorth);
+			ScoreManager.Crashes++;
 		}
 
 		private void GenerateCar(){
