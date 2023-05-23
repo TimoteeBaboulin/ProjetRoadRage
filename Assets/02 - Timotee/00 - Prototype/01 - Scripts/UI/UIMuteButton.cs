@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -20,7 +16,9 @@ public class UIMuteButton : MonoBehaviour{
 		if (_mute)
 			_mixer.SetFloat(_parameterName, Mathf.Log(Zero) * 20);
 		else{
+			
 			float volume = PlayerPrefs.GetFloat(_parameterName);
+			Debug.Log(volume);
 			_mixer.SetFloat(_parameterName, Mathf.Log(volume) * 20);
 		}
 		UpdateSprite();

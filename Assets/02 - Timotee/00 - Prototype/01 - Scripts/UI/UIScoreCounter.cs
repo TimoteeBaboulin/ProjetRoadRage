@@ -10,7 +10,7 @@ namespace UI{
 		}
 
 		private void WriteScore(){
-			_scoreTmp.text = Mathf.FloorToInt(ScoreManager.Score).ToString().PadLeft(9, '0');
+			_scoreTmp.text = Mathf.FloorToInt(ScoreManager.Score).ToString();
 		}
 	}
 }

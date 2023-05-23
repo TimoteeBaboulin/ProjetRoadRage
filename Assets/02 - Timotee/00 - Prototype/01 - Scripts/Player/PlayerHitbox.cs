@@ -9,14 +9,18 @@ namespace Player{
 
 	public class PlayerHitbox : MonoBehaviour{
 		[SerializeField] private HitboxType _hitboxType;
+		[SerializeField] private int _hitboxID;
 
 		private void OnTriggerEnter(Collider other){
 			if (!other.CompareTag("Obstacle")) return;
 
 			other.tag = "Untagged";
-			OnContact?.Invoke(_hitboxType);
+			OnContact?.Invoke(_hitboxType, _hitboxID);
 		}
 
-		public static event Action<HitboxType> OnContact;
+		private void Update(){
+		}
+
+		public static event Action<HitboxType, int> OnContact;
 	}
 }

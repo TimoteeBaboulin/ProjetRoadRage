@@ -27,6 +27,8 @@ namespace Player{
 		[SerializeField] private AnimationCurve _laneChangeCurve;
 		[SerializeField] private ParticleSystem _coinParticleSystem;
 
+		[SerializeField] private ParticleSystem[] _impacts;
+
 		private float _dangerCountdown;
 		private bool _paused;
 
@@ -202,7 +204,8 @@ namespace Player{
 		}
 
 		//Hitboxes
-		private void HandleHitboxContact(HitboxType type){
+		private void HandleHitboxContact(HitboxType type, int id){
+			PlayImpactParticle(id);
 			if (type==HitboxType.Front || !_tweener.IsActive() || _tweener.ElapsedPercentage(false) >= 0.5f)
 				FrontContact();
 			else
@@ -215,7 +218,10 @@ namespace Player{
 		}
 
 		private void SideContact(){
-			if (_dangerCountdown <= 0 || _dangerCountdown / PoliceManager.DangerTime > 0.85f){
+			if (_snowplow!=null && _tweener.ElapsedPercentage(false) <= 0.15f)
+				return;
+			
+			if (_dangerCountdown <= 0 || _dangerCountdown >= PoliceManager.DangerTime * 0.85f){
 				_currentPath = _previousPath;
 				_tweener.Kill();
 				_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
@@ -230,6 +236,12 @@ namespace Player{
 
 			Arrested();
 			OnSideContact?.Invoke(true);
+		}
+
+		private void PlayImpactParticle(int hitbox){
+			if (hitbox is > 2 or < 0) return;
+			
+			_impacts[hitbox].Play();
 		}
 
 		//Game Events
