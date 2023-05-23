@@ -79,9 +79,11 @@ namespace Obstacles{
 				child.gameObject.SetActive(false);
 			}
 
+			Color color = Random.ColorHSV();
 			foreach(var part in parts){
 				part.transform.parent = _modelParent.transform;
 				part.transform.localPosition = Vector3.zero;
+				part.GetComponent<CarPieceMaterialManager>().SetColor(color);
 			}
 		}
 	}

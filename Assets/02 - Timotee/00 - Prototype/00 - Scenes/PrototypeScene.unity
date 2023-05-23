@@ -6537,11 +6537,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frontPrefabs:
-  - {fileID: 8070605707119833195, guid: d3ced9521cbebc34382689b44acf0a76, type: 3}
-  - {fileID: 8070605707119833195, guid: c9914dc058158d64e96c1a15682009c9, type: 3}
+  - {fileID: 158002624334654341, guid: c82556ea8bd48084c8b2e71bd931d241, type: 3}
+  - {fileID: 1171427509912120096, guid: 4276914629876ac49b18ecde8e4f42ba, type: 3}
+  - {fileID: 4518202971944785587, guid: 202d4bcce25eb02498a2c5e8af272473, type: 3}
   _backPrefabs:
-  - {fileID: 8070605707119833195, guid: 0dbce8bf6865f9849b767e8e7cb69443, type: 3}
-  - {fileID: 8070605707119833195, guid: ebc12fcda611fcd4ba648071df8e71bd, type: 3}
+  - {fileID: 9199332828916593312, guid: a3a3bdda7404b3544bb82355a1c1e6f9, type: 3}
+  - {fileID: 3792782307733241337, guid: 3dfbe9dd90b4e6c40b94438c9b870a3d, type: 3}
+  - {fileID: 6344635310165760880, guid: 1f9543b5736c8f44b8d20388218e3165, type: 3}
 --- !u!1 &1080628060
 GameObject:
   m_ObjectHideFlags: 0
