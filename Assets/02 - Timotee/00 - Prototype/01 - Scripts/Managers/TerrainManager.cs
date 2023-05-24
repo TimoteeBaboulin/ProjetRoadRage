@@ -38,6 +38,8 @@ namespace Managers{
 
 		public float Speed => _speed;
 
+		private bool _roadwork;
+
 		private void Awake(){
 			if (Instance!=null) Destroy(gameObject);
 			else Instance = this;
@@ -46,7 +48,7 @@ namespace Managers{
 			_obstacles = new List<ModuleObstacle>();
 			_roadworks = new List<GameObject>();
 
-			TerrainPoolManager.Instance.AddToPool(_map);
+			PoolingManager.Instance.AddToPool(_map);
 		}
 
 		private void Start(){
@@ -110,7 +112,7 @@ namespace Managers{
 		private void InitialiseTerrain(){
 			var terrainLength = 0;
 			while(terrainLength < _renderDistance){
-				var terrain = TerrainPoolManager.Instance.CreatePrefab(_terrainPrefab);
+				var terrain = PoolingManager.Instance.CreatePrefab(_terrainPrefab);
 				_map.Add(terrain);
 				terrain.transform.parent = transform;
 				terrain.transform.position = new Vector3(0, 0, terrainLength + 50);
@@ -120,9 +122,6 @@ namespace Managers{
 
 		private void InitialiseObstacles(){
 			_obstacleTotalLength = 400;
-			// while ( _obstacleTotalLength < _renderDistance ){
-			// 	SpawnObstacle();
-			// }
 		}
 
 		private void StartGame(){
@@ -132,6 +131,7 @@ namespace Managers{
 
 		private void Restart(){
 			_timer = 0;
+			_roadwork = false;
 			_speed = _minSpeed;
 			_maxSpeedReached = false;
 			_obstacleTotalLength = 0;
@@ -141,7 +141,7 @@ namespace Managers{
 		}
 
 		private void SpawnTerrain(){
-			var terrain = TerrainPoolManager.Instance.CreatePrefab(_terrainPrefab);
+			var terrain = PoolingManager.Instance.CreatePrefab(_terrainPrefab);
 			if (!_map.Contains(terrain)){
 				_map.Add(terrain);
 				terrain.transform.parent = _terrainParent;
@@ -155,7 +155,7 @@ namespace Managers{
 		}
 
 		private void SpawnObstacle(){
-			if (_obstacleTotalLength <= _roadworkTotalLength){
+			if (_roadwork || _obstacleTotalLength < _roadworkTotalLength){
 				InstantiateObstacle(true);
 				return;
 			}
@@ -175,13 +175,13 @@ namespace Managers{
 
 			switch (isRoadwork){
 				case true:
-					obstacle = TerrainPoolManager.Instance
+					obstacle = PoolingManager.Instance
 						.CreatePrefab(_roadworkObstaclePrefabs[Random.Range(0, _roadworkObstaclePrefabs.Length)]);
 					scale = new Vector3(_roadworkSide, 1, 1);
 					break;
 				case false:
 					obstacle =
-						TerrainPoolManager.Instance
+						PoolingManager.Instance
 							.CreatePrefab(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Length)]);
 					scale = Vector3.one;
 					break;
@@ -221,6 +221,7 @@ namespace Managers{
 		}
 
 		private void StartRoadwork(){
+			_roadwork = true;
 			_roadworkSide = Random.Range(0, 2)==0 ? -1 : 1;
 			_roadworkTotalLength = _obstacleTotalLength;
 
@@ -244,6 +245,7 @@ namespace Managers{
 					break;
 				case RoadworkPhase.End:
 					roadworkPrefab = _roadworkEndPrefab;
+					_roadwork = false;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
@@ -252,7 +254,7 @@ namespace Managers{
 			position = new Vector3(_roadworkSide * GameManager.LaneWidth, 0, _roadworkTotalLength + 50);
 			scale = new Vector3(_roadworkSide, 1, 1);
 
-			var roadwork = TerrainPoolManager.Instance.CreatePrefab(roadworkPrefab);
+			var roadwork = PoolingManager.Instance.CreatePrefab(roadworkPrefab);
 			if (!_roadworks.Contains(roadwork)){
 				roadwork.transform.parent = _roadworkParent;
 				_roadworks.Add(roadwork);

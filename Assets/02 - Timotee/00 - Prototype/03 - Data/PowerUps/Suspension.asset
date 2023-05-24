@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa055d21643d4c1b89e8dff5efc4a0fb, type: 3}
   m_Name: Suspension
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 79a156bf615b9c046b2dce48cf050afc, type: 3}
+  Icon: {fileID: 21300000, guid: a034e988d8172cd43991837c0121ca4e, type: 3}
   Time: 10

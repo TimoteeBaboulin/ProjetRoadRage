@@ -52,7 +52,7 @@ MonoBehaviour:
   _maxExplosionStrength: 10
   _modelParent: {fileID: 8859540653193960771}
   _haveFixedModel: 1
-  _pointsWorth: 450
+  _pointsWorth: 400
 --- !u!54 &502014818429138928
 Rigidbody:
   m_ObjectHideFlags: 0

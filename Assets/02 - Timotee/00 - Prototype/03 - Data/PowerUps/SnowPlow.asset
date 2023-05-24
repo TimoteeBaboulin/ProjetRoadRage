@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa055d21643d4c1b89e8dff5efc4a0fb, type: 3}
   m_Name: SnowPlow
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 8d377fccf121d9842a1c47212f09e803, type: 3}
+  Icon: {fileID: 21300000, guid: 06b20470205db74419421a38705d67f4, type: 3}
   Time: 12

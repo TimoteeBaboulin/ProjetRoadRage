@@ -92,6 +92,19 @@ namespace Managers{
 
 		private void LocalResetFOV(){
 			StopAllCoroutines();
+			StartCoroutine(ResetFOVCoroutine(0.5f));
+		}
+
+		private IEnumerator ResetFOVCoroutine(float time){
+			float baseFOV = _camera.fieldOfView;
+			float timer = 0;
+
+			while(timer < time){
+				_camera.fieldOfView = Mathf.Lerp(baseFOV, _baseFOV, timer / time);
+				yield return null;
+				timer += Time.deltaTime;
+			}
+
 			_camera.fieldOfView = _baseFOV;
 		}
 	}

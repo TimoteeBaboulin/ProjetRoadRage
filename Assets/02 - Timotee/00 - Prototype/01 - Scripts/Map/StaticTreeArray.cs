@@ -19,7 +19,7 @@ namespace Obstacles{
 		}
 
 		private GameObject LocalGenerateTree(){
-			return TerrainPoolManager.Instance.CreatePrefab(_trees[Random.Range(0, _trees.Length)]);
+			return PoolingManager.Instance.CreatePrefab(_trees[Random.Range(0, _trees.Length)]);
 		}
 	}
 }

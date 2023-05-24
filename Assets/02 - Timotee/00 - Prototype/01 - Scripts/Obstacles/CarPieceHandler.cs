@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Obstacles{
-	public class CarPieceMaterialManager : MonoBehaviour{
+	public class CarPieceHandler : MonoBehaviour{
 		[SerializeField] private MeshRenderer _renderer;
 
 		public void SetColor(Color color){

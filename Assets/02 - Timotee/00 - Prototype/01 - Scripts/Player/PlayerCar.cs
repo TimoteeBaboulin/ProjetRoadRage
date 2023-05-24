@@ -28,6 +28,7 @@ namespace Player{
 		[SerializeField] private ParticleSystem _coinParticleSystem;
 
 		[SerializeField] private ParticleSystem[] _impacts;
+		[SerializeField] private ParticleSystem _snowPlowParticles;
 
 		private float _dangerCountdown;
 		private bool _paused;
@@ -108,8 +109,6 @@ namespace Player{
 		}
 
 		public void PlayCoinParticles(){
-			// if (_coinParticleSystem.isPlaying) return;
-			// Instantiate(_coinParticleSystem, transform.position, transform.rotation).Play();
 			_coinParticleSystem.Play();
 		}
 		
@@ -144,6 +143,7 @@ namespace Player{
 				return;
 			}
 
+			_snowPlowParticles.Play();
 			_snowplowCountdown = time;
 			_snowplow = Instantiate(spawn, _front);
 			StartCoroutine(DestroySnowPlowCoroutine());
@@ -218,10 +218,10 @@ namespace Player{
 		}
 
 		private void SideContact(){
-			if (_snowplow!=null && _tweener.ElapsedPercentage(false) <= 0.15f)
+			if (_snowplow!=null && _tweener.ElapsedPercentage(false) <= 0.1f)
 				return;
 			
-			if (_dangerCountdown <= 0 || _dangerCountdown >= PoliceManager.DangerTime * 0.85f){
+			if (_dangerCountdown <= 0 || _dangerCountdown <= PoliceManager.DangerTime * 0.15f){
 				_currentPath = _previousPath;
 				_tweener.Kill();
 				_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
@@ -284,6 +284,7 @@ namespace Player{
 			//Resets Animations
 			_animator.PlayInFixedTime("SuspensionsOff", 0, 0.01f);
 			_animator.speed = 1;
+			_dangerCountdown = 0;
 		}
 
 		private void Pause(bool paused){
