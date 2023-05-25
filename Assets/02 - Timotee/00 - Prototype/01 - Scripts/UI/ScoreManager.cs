@@ -11,6 +11,12 @@ namespace UI{
 		}
 		private float _score;
 
+		public static float RawScore{
+			get => Instance._rawScore;
+			private set => Instance._rawScore = value;
+		}
+		private float _rawScore;
+
 		public static int Coins{
 			get => Instance._coins;
 			set => Instance._coins = value;
@@ -36,6 +42,7 @@ namespace UI{
 
 		public static void ResetScore(){
 			Score = 0;
+			RawScore = 0;
 			Crashes = 0;
 			Coins = 0;
 		}
@@ -43,6 +50,7 @@ namespace UI{
 		private void Update(){
 			if (GameManager.Paused || !GameManager.GameRunning) return;
 
+			_rawScore += TerrainManager.Instance.Speed * Time.deltaTime;
 			_score += TerrainManager.Instance.Speed * Time.deltaTime;
 		}
 	}

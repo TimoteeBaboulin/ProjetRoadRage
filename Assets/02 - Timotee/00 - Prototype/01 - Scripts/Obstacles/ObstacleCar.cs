@@ -62,26 +62,29 @@ namespace Obstacles{
 			terrainSpeed = 1 + TerrainManager.SpeedIncrease;
 			x = Random.Range(_minExplosionStrength, _maxExplosionStrength) * side;
 			y = Random.Range(_minExplosionStrength, _maxExplosionStrength) * terrainSpeed;
-			z = TerrainManager.Instance.Speed + Random.Range(_minExplosionStrength, _maxExplosionStrength) / 2;
+			z = (TerrainManager.Instance.Speed / 4) + (Random.Range(_minExplosionStrength, _maxExplosionStrength));
 			_rigidbody.isKinematic = false;
 			_rigidbody.AddForce(x, y, z);
+			_rigidbody.AddTorque(x, y, z);
 			
 			ScoreManager.AddScore(_pointsWorth);
 			ScoreManager.Crashes++;
 		}
 
 		private void GenerateCar(){
-			var parts = StaticCarArray.GenerateParts();
+			var parts = StaticCarArray.GenerateParts(out var color);
 
 			while(_modelParent.transform.childCount > 0){
 				Transform child = _modelParent.transform.GetChild(0);
 				child.SetParent(StaticCarArray.GameObject.transform);
 				child.gameObject.SetActive(false);
 			}
-
+			
 			foreach(var part in parts){
-				part.transform.parent = _modelParent.transform;
-				part.transform.localPosition = Vector3.zero;
+				Transform partTransform = part.transform;
+				partTransform.parent = _modelParent.transform;
+				partTransform.localPosition = Vector3.zero;
+				part.SetColor(color);
 			}
 		}
 	}

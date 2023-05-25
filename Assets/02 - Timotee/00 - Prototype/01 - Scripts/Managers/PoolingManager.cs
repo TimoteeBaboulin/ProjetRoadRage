@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Map;
+using Obstacles;
+using UnityEditor;
+using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 namespace Managers{
-	public class TerrainPoolManager : MonoBehaviour{
-		public static TerrainPoolManager Instance;
+	public class PoolingManager : MonoBehaviour{
+		public static PoolingManager Instance;
 
 		private readonly Dictionary<string, List<GameObject>> _pool = new();
+		private readonly Dictionary<string, List<CarPieceHandler>> _carPiecePool = new();
 
 		private void OnEnable(){
 			if (Instance!=null) Destroy(gameObject);
@@ -67,6 +71,33 @@ namespace Managers{
 			value.name = model.name;
 			list.Add(value.gameObject);
 			_pool.Add(key, list);
+			return value;
+		}
+
+		public CarPieceHandler CreatePrefab(CarPieceHandler model){
+			var key = model.name;
+			List<CarPieceHandler> list;
+			CarPieceHandler value;
+
+			if (_carPiecePool.TryGetValue(key, out list)){
+				value = list.FirstOrDefault(obj => !obj.gameObject.activeSelf);
+				if (value!=null){
+					value.gameObject.SetActive(true);
+					return value;
+				}
+
+				value = Instantiate(model);
+				value.name = model.name;
+				list.Add(value);
+
+				return value;
+			}
+
+			list = new List<CarPieceHandler>();
+			value = Instantiate(model);
+			value.name = model.name;
+			list.Add(value);
+			_carPiecePool.Add(key, list);
 			return value;
 		}
 

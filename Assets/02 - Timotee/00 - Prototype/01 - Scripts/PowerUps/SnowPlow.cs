@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using System.Collections;
+using Managers;
 using Obstacles;
 using UnityEngine;
 
@@ -13,6 +14,23 @@ namespace PowerUps{
 
 			car.Thrash(transform.position);
 			CameraManager.ShakeCamera(0.1f);
+		}
+
+		private void OnEnable(){
+			StartCoroutine(SpawnCoroutine());
+		}
+
+		private IEnumerator SpawnCoroutine(){
+			float timer = 0;
+
+			while(timer < .3f){
+				transform.localScale = Vector3.one * (timer/.3f);
+				yield return null;
+
+				timer += Time.deltaTime;
+			}
+			
+			transform.localScale = Vector3.one;
 		}
 	}
 }
