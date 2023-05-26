@@ -24,6 +24,9 @@ namespace Menus{
 
 		public GameObject GameOverMenu;
 
+		[SerializeField] private AudioSource _buttonAudio;
+		[SerializeField] private AudioClip[] _buttonClips;
+
 		private void Start(){
 			if (PlayerPrefs.HasKey(MasterVolumePlayerPrefName))
 				LoadVolumes();
@@ -102,6 +105,11 @@ namespace Menus{
 		public void Restart(){
 			MainMenuParent.SetActive(true);
 			GameOverMenu.SetActive(false);
+		}
+
+		public void PlayButtonSound(){
+			_buttonAudio.clip = _buttonClips[Random.Range(0,_buttonClips.Length)];
+			_buttonAudio.Play();
 		}
 	}
 }

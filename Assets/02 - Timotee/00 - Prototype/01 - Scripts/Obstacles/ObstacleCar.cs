@@ -17,6 +17,8 @@ namespace Obstacles{
 
 		[SerializeField] private float _pointsWorth;
 
+		[SerializeField] private AudioSource _crashAudio;
+		
 		private Vector3 _baseLocalPosition;
 
 		private Rigidbody _rigidbody;
@@ -69,6 +71,7 @@ namespace Obstacles{
 			
 			ScoreManager.AddScore(_pointsWorth);
 			ScoreManager.Crashes++;
+			_crashAudio.Play();
 		}
 
 		private void GenerateCar(){

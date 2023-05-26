@@ -30,6 +30,17 @@ namespace Player{
 		[SerializeField] private ParticleSystem[] _impacts;
 		[SerializeField] private ParticleSystem _snowPlowParticles;
 
+		//Audio Sources
+		[SerializeField] private AudioSource _frontImpactAudio;
+		[SerializeField] private AudioSource _sideImpactAudio;
+		[SerializeField] private AudioSource _policeAudio;
+		[SerializeField] private AudioSource _engineAudio;
+		[SerializeField] private AudioSource _pickUpAudio;
+
+		[SerializeField] private AudioClip _poofOfSmokeClip;
+		[SerializeField] private AudioClip _suspensionOnClip;
+		[SerializeField] private AudioClip _suspensionOffClip;
+		
 		private float _dangerCountdown;
 		private bool _paused;
 
@@ -70,6 +81,8 @@ namespace Player{
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
 			if (Player!=null) return;
 			Player = this;
+			_engineAudio.volume = 0;
+			_engineAudio.DOFade(1,.5f);
 		}
 
 		//Initialise fields
@@ -83,8 +96,12 @@ namespace Player{
 
 		//Editor only
 		private void Update(){
-			if (_dangerCountdown > 0)
+			if (_dangerCountdown > 0){
+				if (Time.deltaTime >= _dangerCountdown)
+					_policeAudio.Stop();
 				_dangerCountdown -= Time.deltaTime;
+				
+			}
 			#if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 				TurnLeft();
@@ -118,6 +135,8 @@ namespace Player{
 				return;
 			}
 
+			_pickUpAudio.clip = _suspensionOnClip;
+			_pickUpAudio.Play();
 			_animator.Play("SuspensionsOn", 0);
 			_suspensionCountdown = time;
 			StartCoroutine(SuspensionCoroutine());
@@ -130,6 +149,8 @@ namespace Player{
 				_suspensionCountdown -= Time.deltaTime;
 			}
 
+			_pickUpAudio.clip = _suspensionOffClip;
+			_pickUpAudio.Play();
 			_animator.Play("SuspensionsOff", 0);
 		}
 
@@ -143,6 +164,8 @@ namespace Player{
 				return;
 			}
 
+			_pickUpAudio.clip = _poofOfSmokeClip;
+			_pickUpAudio.Play();
 			_snowPlowParticles.Play();
 			_snowplowCountdown = time;
 			_snowplow = Instantiate(spawn, _front);
@@ -221,7 +244,10 @@ namespace Player{
 			if (_snowplow!=null && _tweener.ElapsedPercentage(false) <= 0.1f)
 				return;
 			
+			_sideImpactAudio.Play();
+			
 			if (_dangerCountdown <= 0 || _dangerCountdown <= PoliceManager.DangerTime * 0.15f){
+				_policeAudio.Play();
 				_currentPath = _previousPath;
 				_tweener.Kill();
 				_tweener = transform.DOMoveX(-3 + _currentPath * 3, 0.05f).OnComplete(OnCanMove);
@@ -247,13 +273,14 @@ namespace Player{
 		//Game Events
 		private void Die(){
 			Lost();
-			GetComponent<AudioSource>().Play();
+			_frontImpactAudio.Play();
 			_smoke.Play();
 		}
 
 		private void Lost(){
 			GameManager.LoseGame();
 
+			_engineAudio.DOFade(0, .5f);
 			_tweener.Kill();
 			CameraManager.ShakeCamera(1);
 			MusicManager.FadeOut();
@@ -270,6 +297,10 @@ namespace Player{
 			//Clear smoke effect
 			_smoke.Stop();
 			_smoke.Clear();
+			
+			//Stop the police audio from carrying over to the reset
+			_policeAudio.Stop();
+			_engineAudio.DOFade(1,.5f);
 			
 			//Reset Position
 			_currentPath = 1;

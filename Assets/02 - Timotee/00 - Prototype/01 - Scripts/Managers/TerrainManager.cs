@@ -155,7 +155,7 @@ namespace Managers{
 		}
 
 		private void SpawnObstacle(){
-			if (_roadwork || _obstacleTotalLength < _roadworkTotalLength){
+			if (_roadwork || _obstacleTotalLength < _roadworkTotalLength + 50){
 				InstantiateObstacle(true);
 				return;
 			}

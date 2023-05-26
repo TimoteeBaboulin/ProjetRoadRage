@@ -5,7 +5,6 @@ namespace PowerUps{
 		public static StaticPickUpArray Instance;
 
 		[SerializeField] private PickUp[] _pickUps;
-		[SerializeField] [Range(0, 1)] private float _pickUpChance;
 
 		private void Awake(){
 			if (Instance==null){
@@ -21,7 +20,6 @@ namespace PowerUps{
 		}
 
 		private PickUp GeneratePickUpLocal(){
-			if (Random.Range(0f, 1) > _pickUpChance) return null;
 			return _pickUps[Random.Range(0, _pickUps.Length)];
 		}
 	}
