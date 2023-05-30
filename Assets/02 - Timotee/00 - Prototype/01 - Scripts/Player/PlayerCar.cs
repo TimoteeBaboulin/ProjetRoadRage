@@ -81,8 +81,6 @@ namespace Player{
 			_inputBuffer ??= gameObject.AddComponent<InputBuffer>();
 			if (Player!=null) return;
 			Player = this;
-			_engineAudio.volume = 0;
-			_engineAudio.DOFade(1,.5f);
 		}
 
 		//Initialise fields
@@ -123,6 +121,12 @@ namespace Player{
 			InputManager.OnSwipe -= HandleSwipe;
 			GameManager.OnPause -= Pause;
 			GameManager.OnRestart -= Restart;
+		}
+
+		public void PlayEngineAudio(){
+			_engineAudio.Play();
+			_engineAudio.volume = 0;
+			_engineAudio.DOFade(1, 0.5f);
 		}
 
 		public void PlayCoinParticles(){
