@@ -20,7 +20,7 @@ namespace Obstacles{
 		}
 		
 		public static CarPieceHandler[] GenerateParts(out Color color){
-			color = Instance.GenerateColor();
+			color = Instance.GenerateColorLocal();
 			return Instance.LocalGeneratePart();
 		}
 
@@ -32,7 +32,11 @@ namespace Obstacles{
 			return parts;
 		}
 
-		private Color GenerateColor(){
+		public static Color GenerateColor(){
+			return Instance.GenerateColorLocal();
+		}
+		
+		private Color GenerateColorLocal(){
 			return _colors[Random.Range(0, _colors.Length)];
 		}
 	}

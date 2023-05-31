@@ -21,6 +21,12 @@ namespace Obstacles{
 		
 		private Vector3 _baseLocalPosition;
 
+		
+		[SerializeField] private CarPieceHandler[] _fronts;
+		[SerializeField] private CarPieceHandler[] _backs;
+		private CarPieceHandler _activeFront;
+		private CarPieceHandler _activeBack;
+
 		private Rigidbody _rigidbody;
 		private float _speed;
 
@@ -56,6 +62,11 @@ namespace Obstacles{
 			_modelParent.SetActive(true);
 		}
 
+		private void OnDisable(){
+			_activeFront?.gameObject.SetActive(false);
+			_activeBack?.gameObject.SetActive(false);
+		}
+
 		public void Thrash(Vector3 explosionOrigin){
 			gameObject.tag = "Untagged";
 			float side = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
@@ -75,20 +86,31 @@ namespace Obstacles{
 		}
 
 		private void GenerateCar(){
-			var parts = StaticCarArray.GenerateParts(out var color);
-
-			while(_modelParent.transform.childCount > 0){
-				Transform child = _modelParent.transform.GetChild(0);
-				child.SetParent(StaticCarArray.GameObject.transform);
-				child.gameObject.SetActive(false);
-			}
+			Color color = StaticCarArray.GenerateColor();
 			
-			foreach(var part in parts){
-				Transform partTransform = part.transform;
-				partTransform.parent = _modelParent.transform;
-				partTransform.localPosition = Vector3.zero;
-				part.SetColor(color);
-			}
+			_activeFront = _fronts[Random.Range(0, _fronts.Length)];
+			_activeBack = _backs[Random.Range(0, _backs.Length)];
+			
+			_activeFront.SetColor(color);
+			_activeBack.SetColor(color);
+			
+			_activeBack.gameObject.SetActive(true);
+			_activeFront.gameObject.SetActive(true);
+
+			// var parts = StaticCarArray.GenerateParts(out var color);
+			//
+			// while(_modelParent.transform.childCount > 0){
+			// 	Transform child = _modelParent.transform.GetChild(0);
+			// 	child.SetParent(StaticCarArray.GameObject.transform);
+			// 	child.gameObject.SetActive(false);
+			// }
+			//
+			// foreach(var part in parts){
+			// 	Transform partTransform = part.transform;
+			// 	partTransform.parent = _modelParent.transform;
+			// 	partTransform.localPosition = Vector3.zero;
+			// 	part.SetColor(color);
+			// }
 		}
 	}
 }

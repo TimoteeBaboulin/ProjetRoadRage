@@ -13,7 +13,6 @@ namespace PowerUps{
 		private GameObject _activeSpot;
 
 		private void OnEnable(){
-			Debug.Log(Threshold);
 			if (Random.Range(0f,1) > Threshold){
 				_droughtCounter++;
 				return;

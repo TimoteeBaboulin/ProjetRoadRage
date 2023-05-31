@@ -3,7 +3,6 @@ using System.Linq;
 using Map;
 using Obstacles;
 using UnityEditor;
-using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 namespace Managers{
@@ -12,6 +11,7 @@ namespace Managers{
 
 		private readonly Dictionary<string, List<GameObject>> _pool = new();
 		private readonly Dictionary<string, List<CarPieceHandler>> _carPiecePool = new();
+		private readonly Dictionary<string, List<ModuleObstacle>> _obstaclePool = new();
 
 		private void OnEnable(){
 			if (Instance!=null) Destroy(gameObject);
@@ -48,29 +48,29 @@ namespace Managers{
 
 		public ModuleObstacle CreatePrefab(ModuleObstacle model){
 			var key = model.name;
-			List<GameObject> list;
+			List<ModuleObstacle> list;
 			ModuleObstacle value;
 
-			if (_pool.ContainsKey(key)){
-				list = _pool[key];
-				var tempValue = list.FirstOrDefault(obj => !obj.activeSelf);
-				if (tempValue!=null){
+			if (_obstaclePool.ContainsKey(key)){
+				list = _obstaclePool[key];
+				var tempValue = list.FirstOrDefault(obj => !obj.gameObject.activeSelf);
+				if (tempValue !=null){
 					tempValue.gameObject.SetActive(true);
-					return tempValue.GetComponent<ModuleObstacle>();
+					return tempValue;
 				}
 
 				value = Instantiate(model);
 				value.name = model.name;
-				list.Add(value.gameObject);
+				list.Add(value);
 
 				return value;
 			}
 
-			list = new List<GameObject>();
+			list = new List<ModuleObstacle>();
 			value = Instantiate(model);
 			value.name = model.name;
-			list.Add(value.gameObject);
-			_pool.Add(key, list);
+			list.Add(value);
+			_obstaclePool.Add(key, list);
 			return value;
 		}
 
