@@ -39399,8 +39399,8 @@ MonoBehaviour:
   _engineAudio: {fileID: 5314384930441383391}
   _pickUpAudio: {fileID: 8357617245082302834}
   _poofOfSmokeClip: {fileID: 8300000, guid: e6d8bc229d495604e813f5351199c8ee, type: 3}
-  _suspensionOnClip: {fileID: 8300000, guid: bd8dc1b281e6fbd45ba00bdddedc1cb5, type: 3}
-  _suspensionOffClip: {fileID: 8300000, guid: 07d66613dd015684b99bc139375debbd, type: 3}
+  _suspensionOnClip: {fileID: 8300000, guid: 2939bebce293f1943bb4afc6325cfc80, type: 3}
+  _suspensionOffClip: {fileID: 8300000, guid: d965615d8e2b61e43a7a7d6be400ec24, type: 3}
 --- !u!114 &2498614550258818321
 MonoBehaviour:
   m_ObjectHideFlags: 0

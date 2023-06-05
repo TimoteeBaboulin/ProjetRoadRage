@@ -100,12 +100,11 @@ namespace Player{
 				_dangerCountdown -= Time.deltaTime;
 				
 			}
-			#if UNITY_EDITOR
+
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 				TurnLeft();
 			else if (Input.GetKeyDown(KeyCode.RightArrow))
 				TurnRight();
-			#endif
 		}
 
 		//Subscribe/Unsuscribe to events

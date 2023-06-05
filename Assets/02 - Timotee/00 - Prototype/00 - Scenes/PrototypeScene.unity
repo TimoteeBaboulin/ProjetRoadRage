@@ -3482,7 +3482,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 750, y: 1334}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -6132,6 +6132,7 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: ddb6f4572efffc343bfc571a0bf45713, type: 2}
+    - {fileID: 11400000, guid: 3e3be7faae0f4754c99684fe635dca7e, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -6143,6 +6144,20 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 8300000, guid: 0e7b78e46ebb01e40999ec8a0ddb9ed3,
               type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 905091945}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -7283,7 +7298,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 550
   field of view: 80
   orthographic: 0
   orthographic size: 11.64
@@ -8280,7 +8295,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 75.4
+  m_fontSize: 81.25
   m_fontSizeBase: 114
   m_fontWeight: 400
   m_enableAutoSizing: 1

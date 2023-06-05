@@ -97,20 +97,6 @@ namespace Obstacles{
 			_activeBack.gameObject.SetActive(true);
 			_activeFront.gameObject.SetActive(true);
 
-			// var parts = StaticCarArray.GenerateParts(out var color);
-			//
-			// while(_modelParent.transform.childCount > 0){
-			// 	Transform child = _modelParent.transform.GetChild(0);
-			// 	child.SetParent(StaticCarArray.GameObject.transform);
-			// 	child.gameObject.SetActive(false);
-			// }
-			//
-			// foreach(var part in parts){
-			// 	Transform partTransform = part.transform;
-			// 	partTransform.parent = _modelParent.transform;
-			// 	partTransform.localPosition = Vector3.zero;
-			// 	part.SetColor(color);
-			// }
 		}
 	}
 }
